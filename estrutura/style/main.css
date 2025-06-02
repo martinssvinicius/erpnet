@@ -19,12 +19,23 @@
     position: absolute;
     top: 100px;
     left: 300px;
-    width: 800px;
-    height: 500px;
+    width: 400px;
+    height: 300px;
     background-color: #f4f4f4;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     /* cursor: grab; */
     padding: 10px;
+}
+
+.janela .content {
+    list-style-type: none;
+    padding-left: 0px;
+    text-align: right;
+}
+
+.janela #area_acoes {
+    position: absolute;
+    bottom: 10px;
 }

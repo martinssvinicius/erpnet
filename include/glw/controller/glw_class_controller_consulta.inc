@@ -5,7 +5,7 @@
  *
  * @author marti
  */
-abstract class ControllerConsulta {
+abstract class ControllerConsulta extends Controller {
     
     public function __construct() {
         $this->getPersistenciaConsulta();

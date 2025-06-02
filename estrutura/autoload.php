@@ -1,8 +1,15 @@
 <?php
 
 spl_autoload_register(function($classe) {
+    require_once 'est_class_bean.inc';
+    require_once 'est_class_principal.inc';
+    require_once 'est_class_lista.inc';
+    require_once 'est_class_campo_form.inc';
+    require_once 'est_class_campo.inc';
+    require_once '../include/glw/controller/glw_class_controller.inc';
     require_once '../include/glw/persistencia/glw_class_persistencia_padrao.inc';
     require_once '../include/glw/controller/glw_class_controller_consulta.inc';
+    require_once '../include/glw/controller/glw_class_controller_manutencao.inc';
     require_once '../include/glw/view/glw_class_view_consulta.inc';
     require_once '../include/glw/view/glw_class_view_manutencao.inc';
     

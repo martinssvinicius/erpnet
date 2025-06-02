@@ -8,6 +8,7 @@ require_once 'conexao.php';
 
 $rotina = $_POST['rotina'];
 $acao = $_POST['acao'];
+$processo = $_POST['processo'];
 
 $result = Conexao::getConexao()->query("
     select frmcontroller, 
@@ -28,11 +29,13 @@ if (isset($result)) {
     $path = realpath(__DIR__ . "/../../include/$pieces[0]/$pieces[2]/$fileController");
     require_once $path;
     $controller = new $class;
-    
+    if ($processo != 'undefined') {
+        $controller->$processo();
+    }
     if ($controller instanceof ControllerConsulta) {
         $dados = $controller->montaConsulta();
     } else if ($controller instanceof ControllerManutencao) {
-        $dados = $controller->montaConsulta();
+        $dados = $controller->getValoresJson();
     }
     
 }
