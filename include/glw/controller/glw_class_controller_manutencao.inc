@@ -8,14 +8,26 @@
 abstract class ControllerManutencao extends Controller {
     
     protected $Model;
-    
     protected $Tela;
+    protected $Persistencia;
     
     public function __construct() {
         parent::__construct();
         $this->Model = $this->getInstanceModel();
     }
     
+    public function getPersistencia() {
+        if (!isset($this->Persistencia)) {
+            $this->Persistencia = $this->getInstancePersistencia();
+        }
+        return $this->Persistencia;
+    }
+    
+    protected function getInstancePersistencia() {
+        $namespace = str_replace(['ControllerManutencao', 'Controller'], 'Persistencia', get_called_class());
+        return new $namespace($this->Model);
+    }
+
     protected function getInstanceModel() {
         $namespace = str_replace(['ControllerManutencao', 'Controller'], 'Model', get_called_class());
         return new $namespace;
@@ -32,8 +44,10 @@ abstract class ControllerManutencao extends Controller {
     }
     
     public function setBean($oTela, $oModel) {
+        $this->Tela->getValores();
         foreach ($this->Tela->getComponentes() as $oComponente) {
-            Bean::callSetter($oModel, $oComponente->getNome(), $sValor);
+            Bean::callSetter($oModel, $oComponente->getNome(), $oComponente->getValor());
+            $this->Model->getEstabelecimentoEducacao()->getEstabelecimentoPublico()->getCodigo();
         }
     }
     
@@ -59,7 +73,7 @@ abstract class ControllerManutencao extends Controller {
     }
     
     public function executaInclusaoDados() {
-        $this->Model->getPersistencia()->insere();
+        return $this->getPersistencia()->insere();
     }
     
 }

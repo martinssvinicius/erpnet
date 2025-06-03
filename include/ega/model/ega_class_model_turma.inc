@@ -11,7 +11,11 @@ class ModelTurma {
     
     private $codigo;
     private $nome;
+    private $sigla;
     
+    /**
+     * @var ModelEstabelecimentoEducacao
+     */
     private $EstabelecimentoEducacao;
 
     public function setCodigo($codigo): void {
@@ -30,15 +34,23 @@ class ModelTurma {
         return $this->nome;
     }
 
-    public function setEstabelecimentoEducacao($EstabelecimentoEducacao): void {
+    public function setEstabelecimentoEducacao(ModelEstabelecimentoEducacao $EstabelecimentoEducacao): void {
         $this->EstabelecimentoEducacao = $EstabelecimentoEducacao;
     }
-    
+
     public function getEstabelecimentoEducacao() {
         if (!isset($this->EstabelecimentoEducacao)) {
-            
+            $this->EstabelecimentoEducacao = new ModelEstabelecimentoEducacao();
         }
         return $this->EstabelecimentoEducacao;
+    }
+
+    public function setSigla($sigla): void {
+        $this->sigla = $sigla;
+    }
+    
+    public function getSigla() {
+        return $this->sigla;
     }
 
 }

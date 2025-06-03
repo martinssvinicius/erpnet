@@ -12,6 +12,8 @@ class PersistenciaTurma extends \PersistenciaPadrao {
     protected function setRelacionamentos() {
         $this->setTabela('EGA', 'tbturma');
         $this->addRelacionamentoAsBigint('turcodigo', 'codigo', true);
-        $this->addRelacionamentoAsBigint('turnome', 'nome');
+        $this->addRelacionamentoAsVarchar('turnome', 'nome');
+        $this->addRelacionamentoAsVarchar('tursigla', 'sigla');
+        $this->addRelacionamentoAsBigint('estcodigo', 'EstabelecimentoEducacao.EstabelecimentoPublico.codigo');
     }
 }

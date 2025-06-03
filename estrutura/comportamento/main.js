@@ -1,3 +1,5 @@
+document.cookie = 'XDEBUG_SESSION=VSCODE';
+
 function abre_nova_janela() {
     const oRotina = document.getElementById('rotina');
     loadAjax({
@@ -23,7 +25,7 @@ const montaManutencao = function(campos) {
         let input = '';
         switch (campo.tipo) {
             case 'text':
-                input = '<input type="text">';
+                input = `<input name="${campo.nome}" type="text">`;
         }
         html += `<tr><td>${campo.titulo}:</td><td>${input}</td></tr>`
     });
@@ -33,10 +35,19 @@ const montaManutencao = function(campos) {
 
 const confirma_submit = function() {
     const oRotina = document.getElementById('rotina');
+    const values = {};
+    document.getElementById('janela').getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
+        if (el.tagName == 'INPUT') {
+//            values.push({[el.name]: el.value});
+            values[el.name] = el.value;
+        }
+    });
+    
     loadAjax({
         rotina: oRotina.attributes['rotina'].value,
         acao: oRotina.attributes['acao'].value,
         processo: 'processaDados',
+        parametro: {dados: values},
         completo: function() {
             
         }
@@ -69,9 +80,7 @@ document.addEventListener('mouseup', () => {
 
 loadAjax = function(options) {
     const formData = new URLSearchParams();
-    options.parametro = {};
-    options.parametro.rotina = options.rotina;
-    options.parametro.acao = options.acao;
+    options.parametro = {rotina: options.rotina, acao: options.acao, ...options.parametro};
     formData.append('rotina', options.rotina);
     formData.append('acao', options.acao);
     formData.append('processo', options.processo);

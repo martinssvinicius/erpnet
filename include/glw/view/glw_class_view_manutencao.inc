@@ -8,6 +8,7 @@
 abstract class ViewManutencao  {
     
     public function __construct() {
+        $this->Principal = Principal::getInstance();
         $this->criaComponentes();
     }
     
@@ -24,7 +25,10 @@ abstract class ViewManutencao  {
     public abstract function criaComponentes();
 
     public function getValores() {
-//        return json_decode($_POST['dados']);
+        $dados = $this->Principal->getParametro()['dados'];
+        foreach ($this->getComponentes() as $oComponente) {
+            $oComponente->setValor($dados[$oComponente->getNome()]);
+        }
     }
     
 }

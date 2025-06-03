@@ -13,6 +13,7 @@ class CampoForm {
     private $tamanho;
     private $opcoes;
     private $loadToModel;
+    private $valor;
     
     private $lista = [];
 
@@ -76,6 +77,14 @@ class CampoForm {
 
     public function setTitulo($titulo): void {
         $this->titulo = $titulo;
+    }
+    
+    public function getValor() {
+        return $this->valor;
+    }
+
+    public function setValor($valor): void {
+        $this->valor = $valor;
     }
 
 }

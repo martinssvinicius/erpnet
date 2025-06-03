@@ -19,7 +19,7 @@ class ViewManutencaoTurma extends ViewManutencao {
         $this->adicionaCampoNome();
         $this->adicionaCampoSigla();
         $this->adicionaCampoEstabelecimentoEducacao();
-        $this->adicionaCampoTurno();
+//        $this->adicionaCampoTurno();
     }
 
     private function adicionaCampoCodigo() {

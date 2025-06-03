@@ -7,7 +7,10 @@
  */
 abstract class PersistenciaPadrao {
     
-    public function __construct() {
+    protected $Model;
+    
+    public function __construct($oModel = null) {
+        $this->Model = $oModel;
         $this->setRelacionamentos();
     }
     
@@ -17,16 +20,23 @@ abstract class PersistenciaPadrao {
     
     protected abstract function setRelacionamentos();
     
-    private function addRelacionamento($coluna, $model, $chave) {
-        $this->relacionamentos[] = [$coluna, $model, $chave];
+    /**
+     * arrumar essa estrutura de relacionamentos o mais rápido possível pois está péssimo
+     */
+    private function addRelacionamento($coluna, $model, $chave, $bText = false) {
+        $this->relacionamentos[] = [$coluna, $model, $chave, $bText];
+    }
+    
+    protected function addRelacionamentoAsInt($coluna, $model, $chave = false) {
+        $this->addRelacionamento($coluna, $model, $chave);
     }
     
     protected function addRelacionamentoAsBigint($coluna, $model, $chave = false) {
         $this->addRelacionamento($coluna, $model, $chave);
     }
     
-    protected function addRelacionamentoAsVarchar($coluna, $model, $chave) {
-        $this->addRelacionamento($coluna, $model, $chave);
+    protected function addRelacionamentoAsVarchar($coluna, $model, $chave = false) {
+        $this->addRelacionamento($coluna, $model, $chave, true);
     }
     
     protected function setTabela($schema, $tabela) {
@@ -34,7 +44,20 @@ abstract class PersistenciaPadrao {
     }
     
     public function insere() {
+        $aColuna = [];
+        $aValor = [];
+        foreach ($this->relacionamentos as $relacionamento) {
+            $aColuna[] = $relacionamento[0];
+            if (isset($relacionamento[3]) && $relacionamento[3]) {
+                $aValor[] = '\''.Bean::callGetter($this->Model, $relacionamento[1]).'\'';
+            } else {
+                $aValor[] = Bean::callGetter($this->Model, $relacionamento[1]);
+            }
+        };
         
+        $oQuery = new Query();
+        $oQuery->set_sql('insert into '.$this->tabela.'('.implode(',', $aColuna).') values ('.implode(',', $aValor).')');
+        return $oQuery->execute();
     }
     
     public function altera() {
