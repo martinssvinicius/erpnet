@@ -7,8 +7,23 @@
  */
 class Principal {
     
+    public function __construct() {
+        $this->Formulario = new Formulario();
+    }
+    
+    /**
+     * @var Formulario
+     */
+    public $Formulario;
+    
+    /**
+     * @return \Principal
+     */
     public static function getInstance() {
-        $principal = new Principal();
+        global $principal;
+        if (!$principal) {
+            $principal = new Principal();
+        }
         return $principal;
     }
     

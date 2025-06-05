@@ -1,8 +1,44 @@
 <?php
 
-require_once 'autoload.php';
+require_once 'est_class_autoloader.inc';
 
 header('Content-type: application/json');
+
+set_exception_handler(function ($e) {
+    http_response_code(500);
+    echo json_encode([
+        'status' => 'error',
+        'message' => $e->getMessage(),
+        'stack' => $e->getTraceAsString()
+    ]);
+    exit;
+});
+
+// Lidar com warnings, notices etc.
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    http_response_code(500);
+    echo json_encode([
+        'status' => 'error',
+        'message' => "$errstr in $errfile on line $errline",
+        'stack' => implode("\n", array_map(function ($t) {
+            return "{$t['file']}:{$t['line']} - {$t['function']}";
+        }, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)))
+    ]);
+    exit;
+});
+
+// Lidar com erros fatais no shutdown
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        http_response_code(500);
+        echo json_encode([
+            'status' => 'error',
+            'message' => $error['message'] . " in " . $error['file'] . " on line " . $error['line'],
+            'stack' => 'N/A (fatal error)'
+        ]);
+    }
+});
 
 require_once 'conexao.php';
 
@@ -12,11 +48,14 @@ $processo = $_POST['processo'];
 
 $result = Conexao::getConexao()->query("
     select frmcontroller, 
-           frminclude 
+           frminclude,
+           frmtitulo
       from webbased.tbform 
      where rotcodigo = $rotina
        and acacodigo = $acao
 ")->fetchAll(PDO::FETCH_ASSOC);
+
+Principal::getInstance()->Formulario->setTitulo($result[0]['frmtitulo']);
 
 if (isset($result)) {
     $fileController = $result[0]['frmcontroller'];
@@ -28,7 +67,11 @@ if (isset($result)) {
     
     $path = realpath(__DIR__ . "/../../include/$pieces[0]/$pieces[2]/$fileController");
     require_once $path;
-    $controller = new $class;
+    try {
+        $controller = new $class;
+    } catch (Error $ex) {
+        $controller = Factory::loadController($pieces[0], ucfirst($pieces[3]).ucfirst($pieces[4]));
+    }
     if ($processo != 'undefined') {
         $controller->$processo();
     }

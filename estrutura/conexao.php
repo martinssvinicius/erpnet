@@ -9,6 +9,10 @@ class Conexao {
     
     private static $instancia;
     
+    /**
+     * 
+     * @return PDO
+     */
     public static function getConexao() {
         if (!self::$instancia) {
             try {

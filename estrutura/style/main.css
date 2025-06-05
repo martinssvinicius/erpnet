@@ -3,16 +3,42 @@
 }
 
 .menu ul {
-    list-style-type: none;
-    padding-left: 0px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.submenu {
-    display: none;
+.menu ul li {
+    display: inline-block;
+    position: relative;
 }
 
-.menu:hover .submenu {
+.menu ul li a {
     display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.menu ul li:hover .submenu {
+    display: block;
+}
+
+.menu ul li:hover a {
+    background-color: #555;
+}
+
+.menu ul .submenu {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    border-top: 2px solid #555;
+    min-width: 200px;
+    z-index: 1000;
+}
+
+.menu ul .submenu li a {
+    padding: 10px 20px;
 }
 
 .janela {

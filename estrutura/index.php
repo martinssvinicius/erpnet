@@ -1,6 +1,8 @@
 <?php
 
-require_once './autoload.php';
+require_once './est_class_autoloader.inc';
+
+
 
 ?>
 
@@ -16,32 +18,28 @@ require_once './autoload.php';
         <header>
             <div class="menu">
                 <ul>
-                    <li>
-                        <?php
-                            foreach (['Cadastro', 'Gestão'] as $menu) {
-                                echo "<a href=\"#\">$menu</a>";
-                                echo "<div class=\"submenu\">";
-                                foreach (['Aluno', 'Estabelecimento', 'Turma'] as $rotina) {
-                                    echo "<ul>
-                                        <li><a id=\"rotina\" href=\"#\" rotina=\"92001\" acao=\"102\" onclick=\"abre_nova_janela()\">$rotina</a></li>
-                                    </ul>";
-                                }
-                                echo "</div>";
+                    <?php
+                        $aMod = Conexao::getConexao()->query('select * from webbased.tbmodulo')->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($aMod as $oMod) {
+                            echo "<li>";
+                            echo "<a href=\"#\">{$oMod['moddescricao']}</a>";
+                            $aFormMod = Conexao::getConexao()->query("select * from webbased.tbformmod "
+                                    . "where modcodigo = {$oMod['modcodigo']}")->fetchAll(PDO::FETCH_ASSOC);
+                            echo "<ul class=\"submenu\">";
+                            foreach ($aFormMod as $idx => $oFormMod) {
+                            echo "<li><a id=\"rotina\" href=\"#\" rotina=\"{$oFormMod['rotcodigo']}\" "
+                                    . "acao=\"{$oFormMod['acacodigo']}\" "
+                                    . "onclick=\"abre_nova_janela({}, {}, {rotina:{$oFormMod['rotcodigo']}, acao:{$oFormMod['acacodigo']}})\""
+                                    . ">{$oFormMod['fmotitulo']}</a></li>
+                                ";
                             }
-                        ?>
-                    </li>
+                            echo "</ul>";
+                            echo "</li>";
+                        }
+                    ?>
                 </ul>
             </div>
         </header>
-        <div class="janela" id="janela">
-            <header>Consultar Turmas</header>
-            <div class="content"></div>
-            <div id="area_acoes">
-                <button id="botao_confirmar" onclick="confirma_submit()">Confirmar</button>
-                <button id="botao_limpar">Limpar</button>
-                <button id="botao_fechar">Fechar</button>
-            </div>
-        </div>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="comportamento/main.js"></script>
         <script src="comportamento/tela_padrao.js"></script>
