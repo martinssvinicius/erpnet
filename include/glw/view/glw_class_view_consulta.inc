@@ -7,6 +7,21 @@
  */
 abstract class ViewConsulta {
     
-    public abstract function addCampos();
+    private $campos = [];
+    
+    public function __construct() {
+        $this->addCampos();
+        $this->trataCampos();
+    }
+    
+    protected abstract function addCampos();
+    
+    protected function addAcoes() {
+        
+    }
+    
+    protected function trataCampos() {
+        
+    }
     
 }

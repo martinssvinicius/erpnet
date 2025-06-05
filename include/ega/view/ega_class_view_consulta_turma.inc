@@ -11,7 +11,13 @@ use ViewConsulta;
  */
 class ViewConsultaTurma extends ViewConsulta {
     
-    public function addCampos() {
+    protected function addCampos() {
         
     }
+    
+    protected function addAcoes() {
+        parent::addAcoes();
+        
+    }
+    
 }

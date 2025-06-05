@@ -59,7 +59,8 @@ abstract class ControllerManutencao extends Controller {
         $this->criaTela();
         return /*json_encode(*/[
             'tipo' => 2,
-            'campos' => $this->Tela->getComponentes()
+            'campos' => $this->Tela->getComponentes(),
+            'titulo' => $this->Principal->Formulario->getTitulo()
         ]/*)*/;
     }
     

@@ -66,7 +66,11 @@ abstract class PersistenciaPadrao {
     
     public function getSqlGetAll() {
         $sql = "select *
-              from {$this->tabela}";
+              from {$this->tabela}
+                  order by 1 desc
+                  limit 10
+                  
+              ";
         foreach ($this->relacionamentos as $relacionamento) {
             if ($relacionamento[2]) {
 //                $sql = $sql . " where $relacionamento[0] = 1";
