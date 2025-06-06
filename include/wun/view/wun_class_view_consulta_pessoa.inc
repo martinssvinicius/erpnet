@@ -8,6 +8,6 @@
 class ViewConsultaPessoa extends ViewConsulta {
     
     protected function addCampos() {
-        // teste
+        
     }
 }

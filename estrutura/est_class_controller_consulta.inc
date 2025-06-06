@@ -28,8 +28,17 @@ abstract class ControllerConsulta extends Controller {
     
     protected function getInstancePersistencia() {
         $pieces = explode('\\', get_class($this));
-        $class = "$pieces[0]\\Persistencia\\".str_replace('ControllerConsulta', 'Persistencia', $pieces[2]);
-        return new $class;
+        if (count($pieces) > 1) {
+            $class = "$pieces[0]\\Persistencia\\".str_replace('ControllerConsulta', 'Persistencia', $pieces[2]);
+            return new $class;
+        } else {
+            $file = basename((new ReflectionClass(get_called_class()))->getFileName());
+            $file = str_replace('.inc', '', $file);
+            $explod = explode('_', $file);
+            $sigla = $explod[0];
+            $class = str_replace('ControllerConsulta', '', $pieces[0]);
+            return Factory::loadPersistencia($sigla, $class);
+        }
     }
 
     

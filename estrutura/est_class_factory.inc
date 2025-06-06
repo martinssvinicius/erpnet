@@ -14,6 +14,13 @@ abstract class Factory {
         return new $class;
     }
     
+    public static function loadPersistencia($sSigla, $sClass) {
+        $classSnake = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $sClass));
+        require_once '../include/'.strtolower($sSigla).'/persistencia/'.strtolower($sSigla).'_class_persistencia_'.$classSnake.'.inc';
+        $class = 'Persistencia'.$sClass;
+        return new $class;
+    }
+    
     public static function loadController($sSigla, $sClass) {
         $classSnake = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $sClass));
         require_once '../include/'.strtolower($sSigla).'/controller/'.strtolower($sSigla).'_class_controller_'.$classSnake.'.inc';

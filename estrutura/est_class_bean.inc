@@ -29,7 +29,7 @@ abstract class Bean {
         if (count($campos) > 1) {
             foreach ($campos as $indice => $campo) {
                 if ($indice == count($campos)-1) {
-                    return self::callGetter($oModelPartial, $campo, $sValor);
+                    return self::callGetter($oModelPartial, $campo);
                 }
                 $oModelPartial = self::callGetter($oModelPartial, $campo);
             }

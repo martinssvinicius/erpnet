@@ -1,7 +1,6 @@
 document.cookie = 'XDEBUG_SESSION=VSCODE';
 
 function abre_nova_janela(oChave, oParametros, oLink, oDados) {
-    const oRotina = document.getElementById('rotina');
     loadAjax({
         rotina: oLink.rotina,
         acao: oLink.acao,
@@ -14,6 +13,8 @@ function abre_nova_janela(oChave, oParametros, oLink, oDados) {
             });
             
             if (res.tipo == 1) {
+                oJanela.style.width = '800px';
+                oJanela.style.height = '400px';
                 montaConsulta(res, oLink.rotina, oLink.acao);
             }
             if (res.tipo == 2) {
@@ -27,10 +28,17 @@ var Janela = function(opt) {
     const divJanela = document.createElement('div');
     divJanela.className = 'janela';
     divJanela.id = `janela_${opt.rotina}_${opt.acao}`;
+    divJanela.setAttribute('rotina', opt.rotina);
+    divJanela.setAttribute('acao', opt.acao);
 
     const header = document.createElement('header');
     header.textContent = opt.titulo;
     divJanela.appendChild(header);
+
+    const areaFiltros = document.createElement('div');
+    areaFiltros.className = 'areafiltros';
+    areaFiltros.id = 'areafiltros';
+    divJanela.appendChild(areaFiltros);
 
     const acoes = document.createElement('div');
     acoes.className = 'acoesConsulta';
@@ -112,7 +120,10 @@ function montaConsulta(data, rotina, acao) {
     dados = data.dados;
     const janela = document.getElementById(`janela_${rotina}_${acao}`);
     const content = janela.getElementsByClassName('content')[0];
+    const areaFiltros = janela.getElementsByClassName('areafiltros')[0];
     const areaAcoes = janela.getElementsByClassName('acoesConsulta')[0];
+    
+    areaFiltros.innerHTML = '<div><a href="#" onclick="atualizaConsulta()">Consultar</a></div>';
     let html = '<ul>';
     let htmlAcoes = '<ul>';
     data.acoes.forEach(function(acao) {
@@ -183,7 +194,7 @@ const montaManutencao = function(campos, rotina, acao) {
 const confirma_submit = function() {
     const oRotina = document.getElementById('rotina');
     const values = {};
-    document.getElementById('janela').getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
+    document.getElementById(`janela_${oRotina.attributes['rotina'].value}_${oRotina.attributes['acao'].value}`).getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
         if (el.tagName == 'INPUT') {
             values[el.name] = el.value;
         }
@@ -245,7 +256,7 @@ click_janela = function() {
     
 }
 
-let zIndexAtual = 1000;
+let zIndexAtual = 0;
 
 // document.querySelectorAll('.janela').forEach(janela => {
 //   janela.addEventListener('mousedown', () => {
@@ -253,3 +264,35 @@ let zIndexAtual = 1000;
 //     janela.style.zIndex = zIndexAtual;
 //   });
 // });
+
+function click_acao() {
+    
+}
+
+function processa_dados_oculto() {
+    
+}
+
+function Consulta() {
+    
+    this.atualiza = function() {
+        
+    }
+    
+}
+
+function atualizaConsulta() {
+    const el = event.target;
+    const janela = el.parentElement.parentElement.parentElement;
+    const rotina = janela.getAttribute('rotina');
+    const acao = janela.getAttribute('acao');
+    
+    loadAjax({
+        rotina: rotina,
+        acao: acao,
+        completo: function(res) {
+            montaConsulta(res, rotina, acao);
+        }
+    });
+    
+}
