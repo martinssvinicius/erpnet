@@ -7,6 +7,8 @@
  */
 abstract class ViewManutencao  {
     
+    private $Principal;
+
     public function __construct() {
         $this->Principal = Principal::getInstance();
         $this->criaComponentes();

@@ -8,7 +8,6 @@
 abstract class ControllerManutencao extends Controller {
     
     protected $Model;
-    protected $Tela;
     protected $Persistencia;
     
     public function __construct() {
@@ -30,11 +29,6 @@ abstract class ControllerManutencao extends Controller {
 
     protected function getInstanceModel() {
         $namespace = str_replace(['ControllerManutencao', 'Controller'], 'Model', get_called_class());
-        return new $namespace;
-    }
-    
-    protected function getInstanceTela() {
-        $namespace = str_replace('Controller', 'View', get_called_class());
         return new $namespace;
     }
     

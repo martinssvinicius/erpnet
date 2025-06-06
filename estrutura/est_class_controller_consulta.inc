@@ -10,6 +10,7 @@ abstract class ControllerConsulta extends Controller {
     public function __construct() {
         parent::__construct();
         $this->getPersistenciaConsulta();
+        $this->Tela = $this->getInstanceTela();
     }
     
     private $PersistenciaConsulta;
@@ -33,10 +34,11 @@ abstract class ControllerConsulta extends Controller {
 
     
     public function montaConsulta() {
-        return [
+        return [    
             'tipo' => 1,
             'dados' => $this->getPersistenciaConsulta()->getSqlGetAll(),
-            'titulo' => $this->Principal->Formulario->getTitulo()
+            'titulo' => $this->Principal->Formulario->getTitulo(),
+            'acoes' => $this->Tela->getAcoes()
         ];
     }
     

@@ -2,6 +2,8 @@
 
 namespace Ega\View;
 
+use Ega\Enum\EnumTurma;
+use Formulario;
 use ViewConsulta;
 
 /**
@@ -12,12 +14,15 @@ use ViewConsulta;
 class ViewConsultaTurma extends ViewConsulta {
     
     protected function addCampos() {
-        
+        $this->bigint('codigo', 'Código')->width(2)->filter()->order()->key();
+        $this->texto ('nome'  , 'Nome')->width(10)->filter()->order();
+        $this->texto ('sigla' , 'Sigla')->width(10)->filter()->order();
     }
     
     protected function addAcoes() {
         parent::addAcoes();
-        
+        $this->adicionaAcaoGrid(EnumTurma::ROTINA, Formulario::ACAO_INCLUIR);
+        $this->adicionaAcaoGrid(EnumTurma::ROTINA, Formulario::ACAO_ALTERAR);
     }
     
 }

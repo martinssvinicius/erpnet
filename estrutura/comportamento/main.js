@@ -1,6 +1,6 @@
 document.cookie = 'XDEBUG_SESSION=VSCODE';
 
-function abre_nova_janela(oChave, oParametros, oLink) {
+function abre_nova_janela(oChave, oParametros, oLink, oDados) {
     const oRotina = document.getElementById('rotina');
     loadAjax({
         rotina: oLink.rotina,
@@ -8,14 +8,16 @@ function abre_nova_janela(oChave, oParametros, oLink) {
         completo: function(res) {
             
             const oJanela = new Janela({
-                titulo: res.titulo
+                titulo: res.titulo,
+                rotina: oLink.rotina,
+                acao: oLink.acao
             });
             
             if (res.tipo == 1) {
-                montaConsulta(res.dados);
+                montaConsulta(res, oLink.rotina, oLink.acao);
             }
             if (res.tipo == 2) {
-                montaManutencao(res.campos);
+                montaManutencao(res.campos, oLink.rotina, oLink.acao);
             }
         }
     });
@@ -24,18 +26,25 @@ function abre_nova_janela(oChave, oParametros, oLink) {
 var Janela = function(opt) {
     const divJanela = document.createElement('div');
     divJanela.className = 'janela';
-    divJanela.id = 'janela';
+    divJanela.id = `janela_${opt.rotina}_${opt.acao}`;
 
     const header = document.createElement('header');
     header.textContent = opt.titulo;
     divJanela.appendChild(header);
+
+    const acoes = document.createElement('div');
+    acoes.className = 'acoesConsulta';
+    acoes.id = 'acoes_consulta';
+    divJanela.appendChild(acoes);
 
     const divContent = document.createElement('div');
     divContent.className = 'content';
     divJanela.appendChild(divContent);
 
     const areaAcoes = document.createElement('div');
+    areaAcoes.className = 'acoes';
     areaAcoes.id = 'area_acoes';
+    divJanela.appendChild(areaAcoes);
 
     const botaoConfirmar = document.createElement('button');
     botaoConfirmar.id = 'botao_confirmar';
@@ -52,7 +61,8 @@ var Janela = function(opt) {
     botaoFechar.id = 'botao_fechar';
     botaoFechar.textContent = 'Fechar';
     botaoFechar.onclick = function() {
-        document.getElementById('janela').remove();
+        this.parentElement.parentElement.remove();
+        
     }
 
     areaAcoes.appendChild(botaoConfirmar);
@@ -87,24 +97,64 @@ var Janela = function(opt) {
     document.addEventListener('mouseup', () => {
         isDragging = false;
     });
-    
+
+    const fn = () => {
+        zIndexAtual++;
+        janela.style.zIndex = zIndexAtual;
+    };
+    janela.addEventListener('mousedown', fn);
+    fn();
     return divJanela;
     
 };
 
-function montaConsulta(dados) {
-    const janela = document.getElementById('janela');
+function montaConsulta(data, rotina, acao) {
+    dados = data.dados;
+    const janela = document.getElementById(`janela_${rotina}_${acao}`);
     const content = janela.getElementsByClassName('content')[0];
-    let html = '<table>'
+    const areaAcoes = janela.getElementsByClassName('acoesConsulta')[0];
+    let html = '<ul>';
+    let htmlAcoes = '<ul>';
+    data.acoes.forEach(function(acao) {
+        if (!acao.titulo) {
+            switch (acao.acao) {
+                case 101:
+                    acao.titulo = 'Consultar';
+                    break;
+                case 102:
+                    acao.titulo = 'Incluir';
+                    break;
+                case 103:
+                    acao.titulo = 'Alterar';
+                    break;
+                case 104:
+                    acao.titulo = 'Excluir';
+                    break;
+                case 105:
+                    acao.titulo = 'Visualizar';
+                    break;
+            }
+        }
+        htmlAcoes += `<li><a href="#" onclick="abre_nova_janela({}, {}, 
+            {rotina:${acao.rotina}, acao:${acao.acao}}
+        )">${acao.titulo}</a></li>`;
+//        html += `<li><a>${acao.titulo}</a></li>`
+    });
+    htmlAcoes += '</ul>'
+    areaAcoes.innerHTML = htmlAcoes;
+    html = '<table>';
     dados.forEach(function(campo, idx) {
         if (idx == 0) {
             html += '<tr>';
+            html += `<td></td>`;
             for (let key in campo) {
                 html += `<th>${key}</th>`;
             }
             html += '</tr>';
         }
         html += '<tr>';
+        const chave = campo['turcodigo'];
+        html += `<td><input type="checkbox" chave="${chave}"></td>`;
         for (let key in campo) {
             html += `<td>${campo[key]}</td>`;
         }
@@ -114,8 +164,8 @@ function montaConsulta(dados) {
     content.innerHTML = html;
 }
 
-const montaManutencao = function(campos) {
-    const janela = document.getElementById('janela');
+const montaManutencao = function(campos, rotina, acao) {
+    const janela = document.getElementById(`janela_${rotina}_${acao}`);
     const content = janela.getElementsByClassName('content')[0];
     let html = '<table>'
     campos.forEach(function(campo) {
@@ -190,3 +240,16 @@ TelaPadrao = function() {
     }
     
 };
+
+click_janela = function() {
+    
+}
+
+let zIndexAtual = 1000;
+
+// document.querySelectorAll('.janela').forEach(janela => {
+//   janela.addEventListener('mousedown', () => {
+//     zIndexAtual++;
+//     janela.style.zIndex = zIndexAtual;
+//   });
+// });

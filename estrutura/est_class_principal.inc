@@ -17,7 +17,7 @@ class Principal {
     public $Formulario;
     
     /**
-     * @return \Principal
+     * @return Principal
      */
     public static function getInstance() {
         global $principal;

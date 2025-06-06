@@ -53,6 +53,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     /* cursor: grab; */
     padding: 10px;
+    z-index: 1;
+}
+
+.janela .acoesConsulta {
+    list-style-type: none;
+    padding-left: 0px;
+    text-align: right;
 }
 
 .janela .content {
@@ -64,4 +71,23 @@
 .janela #area_acoes {
     position: absolute;
     bottom: 10px;
+}
+
+.janela .acoesConsulta ul {
+    display: flex;
+    /*padding-left: 0px;*/
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.janela .acoesConsulta li {
+    display: inline-block;
+    position: relative;
+}
+
+.janela .acoesConsulta li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
 }
