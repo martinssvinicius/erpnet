@@ -14,7 +14,7 @@ abstract class ViewManutencao  {
         $this->criaComponentes();
     }
     
-    private $componentes;
+    private $componentes = [];
 
     public function getComponentes() {
         return $this->componentes;

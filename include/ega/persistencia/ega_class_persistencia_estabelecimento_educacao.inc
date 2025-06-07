@@ -10,7 +10,7 @@ namespace Ega\Persistencia;
 class PersistenciaEstabelecimentoEducacao extends \PersistenciaPadrao {
     
     protected function setRelacionamentos() {
-        $this->setTabela('EGA', 'tbestabedu');
+        $this->setTabela('EGA', 'tbestabeducacao');
         $this->addRelacionamentoAsInt('estcodigo', 'EstabelecimentoPublico.codigo', true);
     }
 }

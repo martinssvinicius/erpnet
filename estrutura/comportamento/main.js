@@ -13,8 +13,6 @@ function abre_nova_janela(oChave, oParametros, oLink, oDados) {
             });
             
             if (res.tipo == 1) {
-                oJanela.style.width = '800px';
-                oJanela.style.height = '400px';
                 montaConsulta(res, oLink.rotina, oLink.acao);
             }
             if (res.tipo == 2) {
@@ -81,7 +79,6 @@ var Janela = function(opt) {
 
     document.body.appendChild(divJanela);
     
-//    const janela = document.getElementById('janela');
     const janela = divJanela;
     let isDragging = false;
     let offSetX;
@@ -182,8 +179,12 @@ const montaManutencao = function(campos, rotina, acao) {
     campos.forEach(function(campo) {
         let input = '';
         switch (campo.tipo) {
+            case 'number':
+                input = `<input name="${campo.nome}" type="number">`;
+                break;
             case 'text':
                 input = `<input name="${campo.nome}" type="text">`;
+                break;
         }
         html += `<tr><td>${campo.titulo}:</td><td>${input}</td></tr>`
     });
@@ -192,17 +193,18 @@ const montaManutencao = function(campos, rotina, acao) {
 };
 
 const confirma_submit = function() {
-    const oRotina = document.getElementById('rotina');
+    const rotina = event.target.parentElement.parentElement.getAttribute('rotina');
+    const acao = event.target.parentElement.parentElement.getAttribute('acao');
     const values = {};
-    document.getElementById(`janela_${oRotina.attributes['rotina'].value}_${oRotina.attributes['acao'].value}`).getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
+    document.getElementById(`janela_${rotina}_${acao}`).getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
         if (el.tagName == 'INPUT') {
             values[el.name] = el.value;
         }
     });
     
     loadAjax({
-        rotina: oRotina.attributes['rotina'].value,
-        acao: oRotina.attributes['acao'].value,
+        rotina: rotina,
+        acao: acao,
         processo: 'processaDados',
         parametro: {dados: values},
         completo: function() {
@@ -219,7 +221,7 @@ loadAjax = function(options) {
     formData.append('processo', options.processo);
     formData.append('parametro', JSON.stringify(options.parametro));
     formData.append('chave', options.chave);
-    const busca = fetch('api/call_controller.php', {
+    const busca = fetch('/api/call_controller.php', {
         method: options.method || 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'

@@ -16,7 +16,18 @@ abstract class Controller {
     
     protected function getInstanceTela() {
         $namespace = str_replace('Controller', 'View', get_called_class());
-        return new $namespace;
+        if (class_exists($namespace)) {
+            return new $namespace;
+        }
+        $pieces = explode('_', str_replace('.inc', '', basename((new ReflectionClass(get_called_class()))->getFileName())));
+        $className = '';
+        if (!empty($pieces)) {
+            for ($i = 3; $i < count($pieces); $i++) {
+                $className .= ucfirst($pieces[$i]);
+            }
+            return Factory::loadView($pieces[0], $className);
+        }
+        throw 'Não foi encontrada a classe ' . $className;
     }
     
 }

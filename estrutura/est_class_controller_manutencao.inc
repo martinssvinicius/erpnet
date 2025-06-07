@@ -24,12 +24,34 @@ abstract class ControllerManutencao extends Controller {
     
     protected function getInstancePersistencia() {
         $namespace = str_replace(['ControllerManutencao', 'Controller'], 'Persistencia', get_called_class());
-        return new $namespace($this->Model);
+        if (class_exists($namespace)) {
+            return new $namespace($this->Model);
+        }
+        $pieces = explode('_', str_replace('.inc', '', basename((new ReflectionClass(get_called_class()))->getFileName())));
+        $className = '';
+        if (!empty($pieces)) {
+            for ($i = 4; $i < count($pieces); $i++) {
+                $className .= ucfirst($pieces[$i]);
+            }
+            return Factory::loadPersistencia($pieces[0], $className, [$this->Model]);
+        }
+        throw 'Não foi encontrada a classe ' . $className;
     }
 
     protected function getInstanceModel() {
         $namespace = str_replace(['ControllerManutencao', 'Controller'], 'Model', get_called_class());
-        return new $namespace;
+        if (class_exists($namespace)) {
+            return new $namespace;
+        }
+        $pieces = explode('_', str_replace('.inc', '', basename((new ReflectionClass(get_called_class()))->getFileName())));
+        $className = '';
+        if (!empty($pieces)) {
+            for ($i = 4; $i < count($pieces); $i++) {
+                $className .= ucfirst($pieces[$i]);
+            }
+            return Factory::loadModel($pieces[0], $className);
+        }
+        throw 'Não foi encontrada a classe ' . $className;
     }
     
     public function criaTela() {
@@ -41,7 +63,6 @@ abstract class ControllerManutencao extends Controller {
         $this->Tela->getValores();
         foreach ($this->Tela->getComponentes() as $oComponente) {
             Bean::callSetter($oModel, $oComponente->getNome(), $oComponente->getValor());
-            $this->Model->getEstabelecimentoEducacao()->getEstabelecimentoPublico()->getCodigo();
         }
     }
     
@@ -59,6 +80,20 @@ abstract class ControllerManutencao extends Controller {
     }
     
     public function processaDados() {
+        $iAcao = $this->Principal->Formulario->getAcao();
+        switch ($iAcao) {
+            case Formulario::ACAO_INCLUIR:
+                return $this->processaDadosInclusao();
+            default:
+                return $this->processaDadosOutrasAcoes();
+        }
+    }
+    
+    public function executaInclusaoDados() {
+        return $this->getPersistencia()->insere();
+    }
+    
+    public function processaDadosInclusao() {
         $this->criaTela();
         $this->setBean($this->Tela, $this->Model);
         if ($bOk = $this->executaInclusaoDados()) {
@@ -67,8 +102,8 @@ abstract class ControllerManutencao extends Controller {
         return $bOk;
     }
     
-    public function executaInclusaoDados() {
-        return $this->getPersistencia()->insere();
+    public function processaDadosOutrasAcoes() {
+        
     }
     
 }

@@ -56,13 +56,17 @@ $result = Conexao::getConexao()->query("
 ")->fetchAll(PDO::FETCH_ASSOC);
 
 Principal::getInstance()->Formulario->setTitulo($result[0]['frmtitulo']);
+Principal::getInstance()->Formulario->setAcao($_POST['acao']);
 
 if (isset($result)) {
     $fileController = $result[0]['frmcontroller'];
     $controller = str_replace('.inc', '', $fileController);
     $pieces = explode('_', $controller);
-    
-    $class = ucfirst($pieces[0]).'\\'.ucfirst($pieces[2]).'\\'.ucfirst($pieces[2]).ucfirst($pieces[3]).ucfirst($pieces[4]);
+    $className = '';
+    for ($i = 2; $i < count($pieces); $i++) {
+        $className .= ucfirst($pieces[$i]);
+    }
+    $class = ucfirst($pieces[0]).'\\'.ucfirst($pieces[2]).'\\'.$className;
     
     
     $path = realpath(__DIR__ . "/../../include/$pieces[0]/$pieces[2]/$fileController");

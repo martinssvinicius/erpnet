@@ -21,8 +21,7 @@ class ViewConsultaTurma extends ViewConsulta {
     
     protected function addAcoes() {
         parent::addAcoes();
-        $this->adicionaAcaoGrid(EnumTurma::ROTINA, Formulario::ACAO_INCLUIR);
-        $this->adicionaAcaoGrid(EnumTurma::ROTINA, Formulario::ACAO_ALTERAR);
+        $this->adicionaAcoesPadrao();
     }
     
 }

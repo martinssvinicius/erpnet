@@ -23,7 +23,7 @@ class ViewManutencaoTurma extends ViewManutencao {
     }
 
     private function adicionaCampoCodigo() {
-        $oCampo = new CampoForm(Campo::TEXTO, 'codigo', 'Código');
+        $oCampo = new CampoForm(Campo::BIGINT, 'codigo', 'Código');
         $this->adicionaComponente($oCampo);
     }
 
@@ -39,7 +39,7 @@ class ViewManutencaoTurma extends ViewManutencao {
     }
 
     private function adicionaCampoEstabelecimentoEducacao() {
-        $oCampo = new CampoForm(Campo::TEXTO, 'EstabelecimentoEducacao.EstabelecimentoPublico.codigo', 'Estabelecimento de Ensino');
+        $oCampo = new CampoForm(Campo::INTEGER, 'EstabelecimentoEducacao.EstabelecimentoPublico.codigo', 'Estabelecimento de Ensino');
         $this->adicionaComponente($oCampo);
     }
 
