@@ -56,6 +56,7 @@ $result = Conexao::getConexao()->query("
 ")->fetchAll(PDO::FETCH_ASSOC);
 
 Principal::getInstance()->Formulario->setTitulo($result[0]['frmtitulo']);
+Principal::getInstance()->Formulario->setRotina($_POST['rotina']);
 Principal::getInstance()->Formulario->setAcao($_POST['acao']);
 
 if (isset($result)) {
@@ -71,11 +72,13 @@ if (isset($result)) {
     
     $path = realpath(__DIR__ . "/../../include/$pieces[0]/$pieces[2]/$fileController");
     require_once $path;
-    try {
+    
+    if (class_exists($class)) {
         $controller = new $class;
-    } catch (Error $ex) {
-        $controller = Factory::loadController($pieces[0], ucfirst($pieces[3]).ucfirst($pieces[4]));
+    } else {
+        $controller = Factory::loadController($pieces[0], substr($className, 10, strlen($className)));
     }
+    
     if ($processo != 'undefined') {
         $controller->$processo();
     }

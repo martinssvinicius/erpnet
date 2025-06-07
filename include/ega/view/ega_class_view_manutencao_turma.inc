@@ -4,6 +4,7 @@ namespace Ega\View;
 
 use Campo;
 use CampoForm;
+use Ega\View\Componente\ViewComponenteCampoEstabelecimentoEducacao;
 use Lista;
 use ViewManutencao;
 
@@ -40,6 +41,7 @@ class ViewManutencaoTurma extends ViewManutencao {
 
     private function adicionaCampoEstabelecimentoEducacao() {
         $oCampo = new CampoForm(Campo::INTEGER, 'EstabelecimentoEducacao.EstabelecimentoPublico.codigo', 'Estabelecimento de Ensino');
+//        $oCampo = new ViewComponenteCampoEstabelecimentoEducacao();
         $this->adicionaComponente($oCampo);
     }
 

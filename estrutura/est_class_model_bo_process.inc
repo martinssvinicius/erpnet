@@ -5,7 +5,7 @@
  *
  * @author marti
  */
-abstract class ModelBoProcess {
+abstract class ModelBoProcess implements InterfaceBusinessObject {
     
     protected $Model;
     

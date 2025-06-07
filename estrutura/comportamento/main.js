@@ -114,7 +114,7 @@ var Janela = function(opt) {
 };
 
 function montaConsulta(data, rotina, acao) {
-    dados = data.dados;
+    const dados = data.dados;
     const janela = document.getElementById(`janela_${rotina}_${acao}`);
     const content = janela.getElementsByClassName('content')[0];
     const areaFiltros = janela.getElementsByClassName('areafiltros')[0];
@@ -298,3 +298,4 @@ function atualizaConsulta() {
     });
     
 }
+

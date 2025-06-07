@@ -10,6 +10,7 @@ class AcaoConsulta implements JsonSerializable {
     private $rotina;
     private $acao;
     private $titulo;
+    private $parametro = [];
     
     public function getRotina() {
         return $this->rotina;
@@ -40,6 +41,12 @@ class AcaoConsulta implements JsonSerializable {
             'rotina' => $this->rotina,
             'acao' => $this->acao,
             'titulo' => $this->titulo,
+            'parametro' => $this->parametro,
         ];
     }
+    
+    public function adicionaParametro($sNome, $sValor) {
+        $this->parametro[] = [$sNome, $sValor];
+    }
+    
 }

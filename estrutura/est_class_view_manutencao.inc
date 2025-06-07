@@ -31,6 +31,7 @@ abstract class ViewManutencao  {
         foreach ($this->getComponentes() as $oComponente) {
             $oComponente->setValor($dados[$oComponente->getNome()]);
         }
+        return [];
     }
     
 }

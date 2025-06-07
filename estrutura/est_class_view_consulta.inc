@@ -77,5 +77,5 @@ abstract class ViewConsulta {
         $this->adicionaAcaoGrid($iRotina, Formulario::ACAO_EXCLUIR);
         $this->adicionaAcaoGrid($iRotina, Formulario::ACAO_VISUALIZAR);
     }
-
+    
 }

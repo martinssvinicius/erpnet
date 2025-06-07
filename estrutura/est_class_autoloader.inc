@@ -4,6 +4,7 @@ spl_autoload_register(function($classe) {
     require_once 'conexao.php';
     
     
+    require_once 'est_interface_business_object.inc';
     require_once 'est_class_formulario.inc';
     require_once 'est_class_factory.inc';
     require_once 'est_class_query.inc';
@@ -16,7 +17,9 @@ spl_autoload_register(function($classe) {
     require_once 'est_class_campo_form.inc';
     require_once 'est_class_campo.inc';
     require_once 'est_class_controller.inc';
+    require_once 'est_class_enumerator.inc';
     require_once 'est_class_persistencia_padrao.inc';
+    require_once 'est_class_view_componente_campo.inc';
     require_once 'est_class_controller_consulta.inc';
     require_once 'est_class_controller_manutencao.inc';
     require_once 'est_class_model_bo_process.inc';
@@ -30,6 +33,9 @@ spl_autoload_register(function($classe) {
         $output = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $pieces[2]));
         if ($pieces[1] == 'Enum') {
             $caminho = "../include/".strtolower($pieces[0])."/model/".strtolower($pieces[1])."/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
+        } else if ($pieces[2] == 'Componente') {
+            $output = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $pieces[3]));
+            $caminho = "../include/".strtolower($pieces[0])."/view/".strtolower($pieces[2])."/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
         } else {
             $caminho = "../include/".strtolower($pieces[0])."/".strtolower($pieces[1])."/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
         }
@@ -38,3 +44,7 @@ spl_autoload_register(function($classe) {
         }
     }
 });
+
+class Autoloader {
+    
+}
