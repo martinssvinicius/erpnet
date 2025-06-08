@@ -10,4 +10,10 @@ class ViewConsultaPessoa extends ViewConsulta {
     protected function addCampos() {
         
     }
+    
+    protected function addAcoes() {
+        parent::addAcoes();
+        $this->adicionaAcoesPadrao();
+    }
+    
 }

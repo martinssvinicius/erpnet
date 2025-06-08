@@ -43,6 +43,10 @@ abstract class PersistenciaPadrao {
         $this->tabela = $schema.'.'.$tabela;
     }
     
+    protected function getTabela($bComSchema = true) {
+        return $this->tabela;
+    }
+    
     public function insere() {
         $aColuna = [];
         $aValor = [];
@@ -56,17 +60,17 @@ abstract class PersistenciaPadrao {
         };
         
         $oQuery = new Query();
-        $oQuery->set_sql('insert into '.$this->tabela.'('.implode(',', $aColuna).') values ('.implode(',', $aValor).')');
+        $oQuery->set_sql('insert into '.$this->getTabela().'('.implode(',', $aColuna).') values ('.implode(',', $aValor).')');
         return $oQuery->execute();
     }
     
-    public function altera() {
+    public function altera($bAlteraRelacionamentos = false) {
         
     }
     
     public function getSqlGetAll() {
         $sql = "select *
-              from {$this->tabela}
+              from {$this->getTabela()}
                   order by 1 desc
                   limit 10
                   

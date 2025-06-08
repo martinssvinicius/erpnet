@@ -19,7 +19,10 @@ abstract class ControllerManutencaoBoProcess extends ControllerManutencao {
     protected function getInstanceBoProcess() {
         $namespace = str_replace('ControllerManutencao', 'ModelBoProcess', str_replace('\\Controller\\', '\\Model\\Bo\\', get_called_class()));
 //        if (class_exists($namespace)) {
-            return new $namespace($this->Model);
+            $oProcess = new $namespace($this->Model);
+            $oProcess->setPersistencia($this->getPersistencia());
+            return $oProcess;
+            
 //        }
         $pieces = explode('_', str_replace('.inc', '', basename((new ReflectionClass(get_called_class()))->getFileName())));
         $className = '';
@@ -34,7 +37,7 @@ abstract class ControllerManutencaoBoProcess extends ControllerManutencao {
     
     public function executaInclusaoDados() {
         if ($this->getBoProcess()) {
-            $this->getBoProcess();
+            return $this->getBoProcess()->processaInclusao();
         }
         return parent::executaInclusaoDados();
     }

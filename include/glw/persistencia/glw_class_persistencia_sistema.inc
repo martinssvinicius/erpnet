@@ -11,5 +11,6 @@ class PersistenciaSistema extends PersistenciaPadrao {
         $this->setTabela('webbased', 'tbsistema');
         $this->addRelacionamentoAsInt('siscodigo', 'codigo');
         $this->addRelacionamentoAsVarchar('sisnome', 'nome');
+        $this->addRelacionamentoAsInt('concodigo', 'Conjunto.codigo');
     }
 }

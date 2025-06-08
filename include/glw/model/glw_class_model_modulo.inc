@@ -8,7 +8,7 @@
 class ModelModulo {
     
     private $codigo;
-    private $nome;
+    private $descricao;
     
     private $Sistema;
     
@@ -20,8 +20,8 @@ class ModelModulo {
         $this->codigo = $codigo;
     }
     
-    public function getNome() {
-        return $this->nome;
+    public function getDescricao() {
+        return $this->descricao;
     }
 
     public function getSistema() {
@@ -31,8 +31,8 @@ class ModelModulo {
         return $this->Sistema;
     }
 
-    public function setNome($nome): void {
-        $this->nome = $nome;
+    public function setDescricao($nome): void {
+        $this->descricao = $nome;
     }
 
     public function setSistema($Sistema): void {

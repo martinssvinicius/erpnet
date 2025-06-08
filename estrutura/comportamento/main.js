@@ -1,6 +1,41 @@
+const imgPreload = new Image();
+imgPreload.src = '/imagens/imagem_temas_padrao_large_loading.gif';
+
 document.cookie = 'XDEBUG_SESSION=VSCODE';
 
+function bloqueiaJanela(janela) {
+    if (!janela) {
+        janela = document.body;
+    }
+    
+    const divBloq = document.createElement('div');
+    divBloq.id = 'bloqueiaJanela';
+    divBloq.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+    divBloq.style.height = '100%';
+    divBloq.style.zIndex = '99999';
+    
+    const img = document.createElement('img');
+    img.src = '/imagens/imagem_temas_padrao_large_loading.gif';
+    img.style.position = 'fixed';
+    img.style.top = '50%';
+    img.style.left = '50%';
+    img.style.zIndex = '999999';
+    
+    divBloq.appendChild(img);
+    janela.appendChild(divBloq);
+}
+
+function desbloqueiaJanela(janela) {
+    if (!janela) {
+        janela = document;
+    }
+    janela.querySelector('#bloqueiaJanela')?.remove();
+}
+
 function abre_nova_janela(oChave, oParametros, oLink, oDados) {
+    
+    bloqueiaJanela();
+    
     loadAjax({
         rotina: oLink.rotina,
         acao: oLink.acao,
@@ -18,6 +53,12 @@ function abre_nova_janela(oChave, oParametros, oLink, oDados) {
             if (res.tipo == 2) {
                 montaManutencao(res.campos, oLink.rotina, oLink.acao);
             }
+
+            desbloqueiaJanela();
+            
+        },
+        exception: function(res) {
+            desbloqueiaJanela();
         }
     });
 }
@@ -196,11 +237,14 @@ const confirma_submit = function() {
     const rotina = event.target.parentElement.parentElement.getAttribute('rotina');
     const acao = event.target.parentElement.parentElement.getAttribute('acao');
     const values = {};
-    document.getElementById(`janela_${rotina}_${acao}`).getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
+    const janela = document.getElementById(`janela_${rotina}_${acao}`);
+    janela.getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
         if (el.tagName == 'INPUT') {
             values[el.name] = el.value;
         }
     });
+    
+    bloqueiaJanela(janela);
     
     loadAjax({
         rotina: rotina,
@@ -208,7 +252,10 @@ const confirma_submit = function() {
         processo: 'processaDados',
         parametro: {dados: values},
         completo: function() {
-            
+            desbloqueiaJanela(janela);
+        },
+        exception: function() {
+            desbloqueiaJanela(janela);
         }
     });
 };
@@ -289,11 +336,14 @@ function atualizaConsulta() {
     const rotina = janela.getAttribute('rotina');
     const acao = janela.getAttribute('acao');
     
+    bloqueiaJanela(janela);
+    
     loadAjax({
         rotina: rotina,
         acao: acao,
         completo: function(res) {
             montaConsulta(res, rotina, acao);
+            desbloqueiaJanela(janela);
         }
     });
     

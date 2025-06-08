@@ -2,6 +2,7 @@
 
 namespace Ega\Model\Bo;
 
+use Message;
 use ModelBoProcess;
 
 /**
@@ -11,6 +12,9 @@ use ModelBoProcess;
  */
 class ModelBoProcessTurma extends ModelBoProcess {
     
-    
+    protected function validaInclusao() {
+        parent::validaInclusao();
+        throw new Message('Vinicius');
+    }
     
 }

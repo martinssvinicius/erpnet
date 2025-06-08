@@ -4,7 +4,9 @@ spl_autoload_register(function($classe) {
     require_once 'conexao.php';
     
     
+    require_once 'est_class_message.inc';
     require_once 'est_interface_business_object.inc';
+    require_once 'est_interface_business_object_process.inc';
     require_once 'est_class_formulario.inc';
     require_once 'est_class_factory.inc';
     require_once 'est_class_query.inc';
@@ -36,6 +38,9 @@ spl_autoload_register(function($classe) {
         } else if ($pieces[2] == 'Componente') {
             $output = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $pieces[3]));
             $caminho = "../include/".strtolower($pieces[0])."/view/".strtolower($pieces[2])."/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
+        } else if ($pieces[2] == 'Bo') {
+            $output = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $pieces[3]));
+            $caminho = "../include/".strtolower($pieces[0])."/model/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
         } else {
             $caminho = "../include/".strtolower($pieces[0])."/".strtolower($pieces[1])."/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
         }
