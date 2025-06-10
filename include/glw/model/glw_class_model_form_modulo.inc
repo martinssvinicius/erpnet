@@ -5,7 +5,7 @@
  *
  * @author marti
  */
-class ModelModuloFormulario {
+class ModelFormModulo {
     
     private $Rotina;
     private $Acao;

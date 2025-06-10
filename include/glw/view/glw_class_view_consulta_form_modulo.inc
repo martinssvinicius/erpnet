@@ -5,7 +5,7 @@
  *
  * @author marti
  */
-class ViewConsultaModuloFormulario extends ViewConsulta {
+class ViewConsultaFormModulo extends ViewConsulta {
     
     protected function addCampos() {
         

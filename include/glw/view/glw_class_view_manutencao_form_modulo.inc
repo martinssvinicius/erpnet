@@ -5,7 +5,7 @@
  *
  * @author marti
  */
-class ViewManutencaoModuloFormulario extends ViewManutencao {
+class ViewManutencaoFormModulo extends ViewManutencao {
     
     public function criaComponentes() {
         $this->adicionaComponente(new CampoForm(Campo::INTEGER, 'Rotina.codigo', 'Rotina'));

@@ -4,6 +4,7 @@ spl_autoload_register(function($classe) {
     require_once 'conexao.php';
     
     
+    require_once 'est_funcao.inc';
     require_once 'est_class_message.inc';
     require_once 'est_interface_business_object.inc';
     require_once 'est_interface_business_object_process.inc';

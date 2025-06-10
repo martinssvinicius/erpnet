@@ -5,7 +5,7 @@
  *
  * @author marti
  */
-class CampoConsulta {
+class CampoConsulta /*implements JsonSerializable*/ {
     
     private $key = false;
     private $tamanho;
@@ -29,6 +29,12 @@ class CampoConsulta {
     public function order() {
         $this->order = true;
         return $this;
+    }
+    
+    public function jsonSerialize() {
+        return [
+            
+        ];
     }
     
 }

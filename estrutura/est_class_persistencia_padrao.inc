@@ -31,6 +31,10 @@ abstract class PersistenciaPadrao {
         $this->addRelacionamento($coluna, $model, $chave);
     }
     
+    protected function addRelacionamentoAsSmallint($coluna, $model, $chave = false) {
+        $this->addRelacionamento($coluna, $model, $chave);
+    }
+    
     protected function addRelacionamentoAsBigint($coluna, $model, $chave = false) {
         $this->addRelacionamento($coluna, $model, $chave);
     }

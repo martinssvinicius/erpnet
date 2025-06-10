@@ -15,7 +15,7 @@ abstract class ControllerConsulta extends Controller {
     
     private $PersistenciaConsulta;
 
-    public function setPersistenciaConsulta($PersistenciaConsulta): void {
+    public function setPersistenciaConsulta($PersistenciaConsulta) {
         $this->PersistenciaConsulta = $PersistenciaConsulta;
     }
     

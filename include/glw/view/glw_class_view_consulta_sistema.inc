@@ -20,7 +20,7 @@ class ViewConsultaSistema extends ViewConsulta {
     private function addAcaoModulo() {
         $oAcao = $this->adicionaAcaoGrid(92, 101);
         $oAcao->adicionaParametro('Sistema.codigo', '$consulta->codigo');
-        $oAcao->setTitulo('Modulos');
+        $oAcao->setTitulo('Menu');
     }
     
 }

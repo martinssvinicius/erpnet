@@ -5,7 +5,7 @@
  *
  * @author marti
  */
-class PersistenciaModuloFormulario extends PersistenciaPadrao {
+class PersistenciaFormModulo extends PersistenciaPadrao {
     
     protected function setRelacionamentos() {
         $this->setTabela('webbased', 'tbformmod');
