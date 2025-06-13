@@ -18,12 +18,20 @@ abstract class PersistenciaPadrao {
     private $relacionamentos = [];
     private $chave = [];
     
+    private $PersistenciaRelacionamento = [];
+    
     protected abstract function setRelacionamentos();
     
     /**
      * arrumar essa estrutura de relacionamentos o mais rápido possível pois está péssimo
      */
     private function addRelacionamento($coluna, $model, $chave, $bText = false) {
+//        $oPersistenciaRel = new PersistenciaRelacionamento();
+//        $oPersistenciaRel->setNomeBanco($coluna);
+//        $oPersistenciaRel->setNomeModel($model);
+//        $oPersistenciaRel->setChave($chave);
+//        $this->PersistenciaRelacionamento[] = $oPersistenciaRel;
+         
         $this->relacionamentos[] = [$coluna, $model, $chave, $bText];
     }
     

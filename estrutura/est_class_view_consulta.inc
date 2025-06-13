@@ -42,32 +42,38 @@ abstract class ViewConsulta {
         return $this->acoes;
     }
     
-    protected function integer() {
+    protected function integer($nome, $titulo) {
         $campo = new CampoConsulta();
+        $campo->setNome($nome);
+        $campo->setTitulo($titulo);
+        $this->campos[] = $campo;
         return $campo;
     }
     
-    protected function texto() {
+    protected function texto($nome, $titulo) {
         $campo = new CampoConsulta();
+        $campo->setNome($nome);
+        $campo->setTitulo($titulo);
+        $this->campos[] = $campo;
         return $campo;
     }
     
-    protected function smallint() {
-        
+    protected function smallint($nome, $titulo) {
+        return $this->integer($nome, $titulo);
     }
     
-    private function adicionaCampo() {
-        
-    }
-    
-    protected function bigint() {
-        return $this->integer();
+    protected function bigint($nome, $titulo) {
+        return $this->integer($nome, $titulo);
     }
     
     protected function lista() {
         
     }
     
+    public function getCampos() {
+        return $this->campos;
+    }
+
     protected function adicionaAcoesPadrao($iRotina = null) {
         if (is_null($iRotina)) {
             $iRotina = $this->Principal->Formulario->getRotina();

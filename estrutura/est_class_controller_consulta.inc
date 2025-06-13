@@ -45,9 +45,10 @@ abstract class ControllerConsulta extends Controller {
     public function montaConsulta() {
         return [    
             'tipo' => 1,
+            'campos' => $this->Tela->getCampos(),
             'dados' => $this->getPersistenciaConsulta()->getSqlGetAll(),
             'titulo' => $this->Principal->Formulario->getTitulo(),
-            'acoes' => $this->Tela->getAcoes()
+            'acoes' => $this->Tela->getAcoes(),
         ];
     }
     

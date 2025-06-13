@@ -14,6 +14,7 @@ spl_autoload_register(function($classe) {
     require_once 'est_class_sql.inc';
     require_once 'est_class_bean.inc';
     require_once 'est_class_principal.inc';
+    require_once 'est_class_persistencia_relacionamento.inc';
     require_once 'est_class_campo_consulta.inc';
     require_once 'est_class_acao_consulta.inc';
     require_once 'est_class_lista.inc';
