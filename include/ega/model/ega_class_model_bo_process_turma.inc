@@ -14,7 +14,7 @@ class ModelBoProcessTurma extends ModelBoProcess {
     
     protected function validaInclusao() {
         parent::validaInclusao();
-        throw new Message('Vinicius');
+//        throw new Message('Vinicius');
     }
     
 }

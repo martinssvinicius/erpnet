@@ -22,6 +22,8 @@ $record->appendField($title);
 $marc_data = $record->toRaw();
 file_put_contents('../temp/teste1.mrc', $marc_data, FILE_APPEND);
 
+echo 'teste';
+
 //file_put_contents('/temp/livro.mrc', 'teste');
 
 

@@ -24,7 +24,7 @@ class ViewManutencaoTurma extends ViewManutencao {
     }
 
     private function adicionaCampoCodigo() {
-        $oCampo = new CampoForm(Campo::BIGINT, 'codigo', 'Código');
+        $oCampo = new CampoForm(Campo::SERIAL, 'codigo', 'Código');
         $this->adicionaComponente($oCampo);
     }
 
@@ -41,6 +41,8 @@ class ViewManutencaoTurma extends ViewManutencao {
 
     private function adicionaCampoEstabelecimentoEducacao() {
         $oCampo = new CampoForm(Campo::INTEGER, 'EstabelecimentoEducacao.EstabelecimentoPublico.codigo', 'Estabelecimento de Ensino');
+        $oCampo->setExterno(\Ega\Enum\EnumEstabelecimentoEducacao::ROTINA);
+        $oCampo->getExterno()->adicionaExterno($oCampo, 'EstabelecimentoPublico.codigo');
 //        $oCampo = new ViewComponenteCampoEstabelecimentoEducacao();
         $this->adicionaComponente($oCampo);
     }
