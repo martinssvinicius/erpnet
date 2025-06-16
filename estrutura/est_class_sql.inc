@@ -7,6 +7,14 @@
  */
 class SQL {
     
+    private $sql;
     
+    public function set_sql($sql) {
+        $this->sql = $sql;
+    }
+    
+    public function get_sql() {
+        return $this->sql;
+    }
     
 }

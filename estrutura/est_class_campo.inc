@@ -12,6 +12,7 @@ class Campo {
           INTEGER = 'number',
           BIGINT = 'number',
           LISTA = 'lista',
-          FILE = 'file';
+          FILE = 'file',
+          SERIAL = 'serial';
     
 }

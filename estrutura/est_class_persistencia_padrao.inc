@@ -63,6 +63,14 @@ abstract class PersistenciaPadrao {
         $aColuna = [];
         $aValor = [];
         foreach ($this->relacionamentos as $relacionamento) {
+            if ($relacionamento[2]) {
+                $oQuery = new Query();
+                $oQuery->set_sql("select max($relacionamento[0]) qtd from ".$this->getTabela());
+                $dados = $oQuery->fetch_array();
+                $iSeq = isset($dados['qtd']) ? $dados['qtd'] + 1 : null;
+                Bean::callSetter($this->Model, $relacionamento[1], $iSeq);
+                
+            }
             $aColuna[] = $relacionamento[0];
             if (isset($relacionamento[3]) && $relacionamento[3]) {
                 $aValor[] = '\''.Bean::callGetter($this->Model, $relacionamento[1]).'\'';
@@ -85,7 +93,6 @@ abstract class PersistenciaPadrao {
               from {$this->getTabela()}
                   order by 1 desc
                   limit 10
-                  
               ";
         foreach ($this->relacionamentos as $relacionamento) {
             if ($relacionamento[2]) {
@@ -93,6 +100,13 @@ abstract class PersistenciaPadrao {
             }
         }
         return Conexao::getConexao()->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getFirstFromSql(\SQL $oSql) {
+        $oQuery = new Query();
+        $oQuery->set_sql($oSql->get_sql());
+        $dados = $oQuery->fetch_array();
+        return $dados;
     }
     
 }

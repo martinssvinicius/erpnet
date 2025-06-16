@@ -5,33 +5,39 @@
  *
  * @author marti
  */
-class Query {
+class Query extends SQL {
     
     private $SQL;
     
-    private $conexao;
+    private $Conexao;
     
     public function getConexao() {
-        if (!isset($this->conexao)) {
-            $this->conexao = Conexao::getConexao();
+        if (!isset($this->Conexao)) {
+            $this->Conexao = Conexao::getConexao();
         }
-        return $this->conexao;
+        return $this->Conexao;
     }
 
-    public function setConexao($conexao): void {
-        $this->conexao = $conexao;
+    public function setConexao($conexao) {
+        $this->Conexao = $conexao;
     }
 
-    public function set_sql($sql) {
-        $this->SQL = $sql;
-    }
-    
-    public function get_sql() {
-        return $sql;
-    }
-    
     public function execute() {
-        return $this->getConexao()->prepare($this->SQL)->execute();
+//        return $this->getConexao()->query($this->get_sql())->execute();
+        return $this->prepare()->execute();
+    }
+    
+    public function prepare() {
+        return $this->getConexao()->prepare($this->get_sql());
+    }
+    
+    public function fetch_array() {
+        return $this->getConexao()->query($this->get_sql())->fetch(PDO::FETCH_ASSOC);
+//        return $this->prepare()->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function fetch_object() {
+        return $this->prepare()->fetchAll(PDO::FETCH_OBJ);
     }
     
 }

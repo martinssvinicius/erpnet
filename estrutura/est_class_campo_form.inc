@@ -16,6 +16,8 @@ class CampoForm {
     private $valor;
     
     private $lista = [];
+    
+    private $Externo;
 
     public function __construct($tipo, $nome, $titulo) {
         $this->tipo = $tipo;
@@ -85,6 +87,17 @@ class CampoForm {
 
     public function setValor($valor): void {
         $this->valor = $valor;
+    }
+    
+    public function getExterno() {
+        return $this->Externo;
+    }
+
+    public function setExterno($iRotina, $iAcao = Formulario::ACAO_CONSULTAR) {
+        $oCampoExterno = new CampoExterno();
+        $oCampoExterno->setRotina($iRotina);
+        $oCampoExterno->setAcao($iAcao);
+        $this->Externo = $oCampoExterno;
     }
 
 }

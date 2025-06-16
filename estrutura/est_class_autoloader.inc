@@ -19,6 +19,7 @@ spl_autoload_register(function($classe) {
     require_once 'est_class_acao_consulta.inc';
     require_once 'est_class_lista.inc';
     require_once 'est_class_campo_form.inc';
+    require_once 'est_class_campo_externo.inc';
     require_once 'est_class_campo.inc';
     require_once 'est_class_controller.inc';
     require_once 'est_class_enumerator.inc';
