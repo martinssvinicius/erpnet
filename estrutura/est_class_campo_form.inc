@@ -99,5 +99,9 @@ class CampoForm {
         $oCampoExterno->setAcao($iAcao);
         $this->Externo = $oCampoExterno;
     }
+    
+    public function onChange() {
+        $args = func_get_args();
+    }
 
 }

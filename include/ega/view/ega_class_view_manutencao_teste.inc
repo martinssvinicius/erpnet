@@ -13,6 +13,7 @@ use function toJson;
 class ViewManutencaoTeste extends ViewManutencao {
     
     public function criaComponentes() {
-        
+        $this->adicionaComponente(new \CampoForm(\Campo::FILE, 'teste', 'teste'));
+//        $this->adicionaComponente(new \CampoForm(\Campo::FILE, 'other_file', 'other file'));
     }
 }

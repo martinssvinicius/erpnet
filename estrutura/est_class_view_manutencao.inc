@@ -12,6 +12,7 @@ abstract class ViewManutencao  {
     public function __construct() {
         $this->Principal = Principal::getInstance();
         $this->criaComponentes();
+        $this->criaComportamentos();
     }
     
     private $componentes = [];
@@ -32,6 +33,14 @@ abstract class ViewManutencao  {
             $oComponente->setValor($dados[$oComponente->getNome()]);
         }
         return [];
+    }
+    
+    public function criaComportamentos() {
+        
+    }
+    
+    protected function loadComportamentoFromFile($sSigla, $sNome) {
+//        echo '<script></script>';
     }
     
 }

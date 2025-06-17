@@ -229,6 +229,9 @@ const montaManutencao = function(campos, rotina, acao) {
             case 'text':
                 input = `<input name="${campo.nome}" type="text">`;
                 break;
+            case 'file':
+                input = `<input name="${campo.nome}" type="file">`;
+                break;
         }
         html += `<tr><td>${campo.titulo}:</td><td>${input}</td></tr>`
     });
@@ -241,8 +244,12 @@ const confirma_submit = function() {
     const acao = event.target.parentElement.parentElement.getAttribute('acao');
     const values = {};
     const janela = document.getElementById(`janela_${rotina}_${acao}`);
+    const files = [];
     janela.getElementsByClassName('content')[0].querySelectorAll('*').forEach(function(el) {
-        if (el.tagName == 'INPUT') {
+        if (el.type == 'file') {
+//            files[el.name] = el.files[0];
+            files.push({name: el.name, file: el.files[0]});
+        } else if (el.tagName == 'INPUT') {
             values[el.name] = el.value;
         }
     });
@@ -253,7 +260,7 @@ const confirma_submit = function() {
         rotina: rotina,
         acao: acao,
         processo: 'processaDados',
-        parametro: {dados: values},
+        parametro: {dados: values, files: files},
         completo: function() {
             desbloqueiaJanela(janela);
         },
@@ -264,24 +271,29 @@ const confirma_submit = function() {
 };
 
 loadAjax = function(options) {
-    const formData = new URLSearchParams();
+//    const formData = new URLSearchParams();
+    const formData = new FormData();
     options.parametro = {rotina: options.rotina, acao: options.acao, ...options.parametro};
     formData.append('rotina', options.rotina);
     formData.append('acao', options.acao);
     formData.append('processo', options.processo);
     formData.append('parametro', JSON.stringify(options.parametro));
     formData.append('chave', options.chave);
+    options.parametro.files?.forEach(function(file) {
+        formData.append(file.name, file.file);
+    });
     const busca = fetch('/api/call_controller.php', {
         method: options.method || 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
+//        headers: {
+//            'Content-Type': 'application/x-www-form-urlencoded'
+//        },
         body: formData
     });
     busca.then(response => {
         if (!response.ok) {
             options.exception && options.exception.call();
         }
+//        return response.text();
         return response.json();
     })
     .then(function(response) {
@@ -292,8 +304,7 @@ loadAjax = function(options) {
         }
     }).catch (function(err) {
         alert(err.message);
-    })
-;
+    });
 }
 
 TelaPadrao = function() {

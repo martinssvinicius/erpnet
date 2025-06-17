@@ -30,6 +30,7 @@ class ViewManutencaoTurma extends ViewManutencao {
 
     private function adicionaCampoNome() {
         $oCampo = new CampoForm(Campo::TEXTO, 'nome', 'Nome');
+        $oCampo->onChange('oEGAViewManutencaoTurma.onChangeNome');
         $this->adicionaComponente($oCampo);
     }
 
@@ -41,8 +42,8 @@ class ViewManutencaoTurma extends ViewManutencao {
 
     private function adicionaCampoEstabelecimentoEducacao() {
         $oCampo = new CampoForm(Campo::INTEGER, 'EstabelecimentoEducacao.EstabelecimentoPublico.codigo', 'Estabelecimento de Ensino');
-        $oCampo->setExterno(\Ega\Enum\EnumEstabelecimentoEducacao::ROTINA);
-        $oCampo->getExterno()->adicionaExterno($oCampo, 'EstabelecimentoPublico.codigo');
+//        $oCampo->setExterno(\Ega\Enum\EnumEstabelecimentoEducacao::ROTINA);
+//        $oCampo->getExterno()->adicionaExterno($oCampo, 'EstabelecimentoPublico.codigo');
 //        $oCampo = new ViewComponenteCampoEstabelecimentoEducacao();
         $this->adicionaComponente($oCampo);
     }
@@ -54,6 +55,11 @@ class ViewManutencaoTurma extends ViewManutencao {
             new Lista(2, 'Vespertino'),
         ]);
         $this->adicionaComponente($oCampo);
+    }
+    
+    public function criaComportamentos() {
+        parent::criaComportamentos();
+        $this->loadComportamentoFromFile('EGA', 'ManutencaoTurma');
     }
     
 }

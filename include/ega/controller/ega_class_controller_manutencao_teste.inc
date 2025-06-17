@@ -11,4 +11,9 @@ use ControllerManutencao;
  */
 class ControllerManutencaoTeste extends ControllerManutencao {
     
+    public function processaDadosInclusao() {
+//        parent::processaDadosInclusao();
+        throw \Exception();
+    }
+    
 }
