@@ -232,6 +232,9 @@ const montaManutencao = function(campos, rotina, acao) {
             case 'file':
                 input = `<input name="${campo.nome}" type="file">`;
                 break;
+            case 'lista':
+                input = `<select name="${campo.nome}" ></select>`;
+                break;
         }
         html += `<tr><td>${campo.titulo}:</td><td>${input}</td></tr>`
     });

@@ -51,6 +51,14 @@ abstract class PersistenciaPadrao {
         $this->addRelacionamento($coluna, $model, $chave, true);
     }
     
+    protected function addRelacionamentoAsText($coluna, $model, $chave = false) {
+        $this->addRelacionamento($coluna, $model, $chave, true);
+    }
+    
+    protected function addRelacionamentoAsDate($coluna, $model, $chave = false) {
+        $this->addRelacionamento($coluna, $model, $chave, true);
+    }
+    
     protected function setTabela($schema, $tabela) {
         $this->tabela = $schema.'.'.$tabela;
     }
@@ -67,7 +75,7 @@ abstract class PersistenciaPadrao {
                 $oQuery = new Query();
                 $oQuery->set_sql("select max($relacionamento[0]) qtd from ".$this->getTabela());
                 $dados = $oQuery->fetch_array();
-                $iSeq = isset($dados['qtd']) ? $dados['qtd'] + 1 : null;
+                $iSeq = isset($dados['qtd']) ? $dados['qtd'] + 1 : 1;
                 Bean::callSetter($this->Model, $relacionamento[1], $iSeq);
                 
             }

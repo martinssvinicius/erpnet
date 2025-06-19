@@ -1,0 +1,81 @@
+{
+  "kind": "books#volumes",
+  "totalItems": 1,
+  "items": [
+    {
+      "kind": "books#volume",
+      "id": "f7JVBQAAQBAJ",
+      "etag": "KQMha+EN+SQ",
+      "selfLink": "https://www.googleapis.com/books/v1/volumes/f7JVBQAAQBAJ",
+      "volumeInfo": {
+        "title": "HTML5 – 2ª Edição",
+        "subtitle": "A linguagem de marcação que revolucionou a web",
+        "authors": [
+          "Maurício Samy Silva"
+        ],
+        "publisher": "Novatec Editora",
+        "publishedDate": "2014-11-13",
+        "description": "HTML5 é a linguagem de marcação que amplia de forma surpreendente as funcionalidades da HTML, alterando de maneira significativa como você desenvolve para a web. Trata-se da mais extensa especificação para a HTML focada em criar funcionalidades para desenvolvimento não só de sites, mas também de aplicações de internet rica (RIA). Maujor aborda as funcionalidades da HTML5, de forma clara, em linguagem didática, mostrando vários exemplos práticos em funcionamento no site do livro (www.livrohtml5.com.br). A utilização de marcação HTML5 possibilita ao autor web alcançar os seguintes objetivos: • Criar um código totalmente semântico empregando os novos elementos da linguagem ou mesmo os elementos já existentes que tiveram sua semântica redefinida. • Usar os novos atributos da linguagem para criar elementos gráficos ricos no desenvolvimento de aplicações web. • Inserir mídia, tais como áudio e vídeo e a funcionalidade canvas de uma forma nativa, sem dependência de plugins de terceiros ou extensões proprietárias. • Desenvolver formulários altamente interativos com validação no lado do cliente com uso de atributos criados especialmente para essas finalidades. • Usar as API Geolocation, Web Storage, Web Messaging, Web Sockets e Web Workers. • Usar mecanismos, como Microdados e, ARIA para incrementar a acessibilidade.",
+        "industryIdentifiers": [
+          {
+            "type": "ISBN_13",
+            "identifier": "9788575224038"
+          },
+          {
+            "type": "ISBN_10",
+            "identifier": "8575224034"
+          }
+        ],
+        "readingModes": {
+          "text": false,
+          "image": true
+        },
+        "pageCount": 51,
+        "printType": "BOOK",
+        "categories": [
+          "Computers"
+        ],
+        "maturityRating": "NOT_MATURE",
+        "allowAnonLogging": false,
+        "contentVersion": "1.1.1.0.preview.1",
+        "panelizationSummary": {
+          "containsEpubBubbles": false,
+          "containsImageBubbles": false
+        },
+        "imageLinks": {
+          "smallThumbnail": "http://books.google.com/books/content?id=f7JVBQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api",
+          "thumbnail": "http://books.google.com/books/content?id=f7JVBQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+        },
+        "language": "pt-BR",
+        "previewLink": "http://books.google.com.br/books?id=f7JVBQAAQBAJ&printsec=frontcover&dq=isbn:9788575224038&hl=&cd=1&source=gbs_api",
+        "infoLink": "http://books.google.com.br/books?id=f7JVBQAAQBAJ&dq=isbn:9788575224038&hl=&source=gbs_api",
+        "canonicalVolumeLink": "https://books.google.com/books/about/HTML5_2%C2%AA_Edi%C3%A7%C3%A3o.html?hl=&id=f7JVBQAAQBAJ"
+      },
+      "saleInfo": {
+        "country": "BR",
+        "saleability": "NOT_FOR_SALE",
+        "isEbook": false
+      },
+      "accessInfo": {
+        "country": "BR",
+        "viewability": "PARTIAL",
+        "embeddable": true,
+        "publicDomain": false,
+        "textToSpeechPermission": "ALLOWED",
+        "epub": {
+          "isAvailable": false
+        },
+        "pdf": {
+          "isAvailable": true,
+          "acsTokenLink": "http://books.google.com.br/books/download/HTML5_2%C2%AA_Edi%C3%A7%C3%A3o-sample-pdf.acsm?id=f7JVBQAAQBAJ&format=pdf&output=acs4_fulfillment_token&dl_type=sample&source=gbs_api"
+        },
+        "webReaderLink": "http://play.google.com/books/reader?id=f7JVBQAAQBAJ&hl=&source=gbs_api",
+        "accessViewStatus": "SAMPLE",
+        "quoteSharingAllowed": false
+      },
+      "searchInfo": {
+        "textSnippet": "HTML5 é a linguagem de marcação que amplia de forma surpreendente as funcionalidades da HTML, alterando de maneira significativa como você desenvolve para a web."
+      }
+    }
+  ]
+}

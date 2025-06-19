@@ -77,7 +77,7 @@ function writeFileMarc() {
     //echo "\n\nArquivo 'livro.mrc' gerado com sucesso!";
 }
 
-readFileMarc();
+//readFileMarc();
 function readFileMarc() {
     require_once __DIR__ . '/estrutura/libs/File_MARC-1.4.1/File/MARC.php';
     
@@ -89,3 +89,64 @@ function readFileMarc() {
     }
     
 }
+
+class TesteMartins {
+    
+    public function echoTeste() {
+        echo 'teste';
+    }
+    
+    public function __destruct() {
+        $a = 1;
+    }
+    
+}
+
+//echoTeste();
+function echoTeste() {
+    $class = new TesteMartins();
+    $class->echoTeste();
+//    unset($class);
+}
+
+//callApiGoogleBooksFileGetContents();
+function callApiGoogleBooksFileGetContents() {
+    $data = file_get_contents('https://www.googleapis.com/books/v1/volumes?q=isbn:9788575224038');
+//    file_put_contents('../temp/isbn.txt', $data);
+}
+
+function callApiOpenLibrary() {
+    $data = file_get_contents('https://openlibrary.org/api/books?bibkeys=ISBN:9788575224038&format=json&jscmd=data');
+    
+}
+
+callApiGoogleBooksCurl();
+function callApiGoogleBooksCurl() {
+    $url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:9788575224038';
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+    
+//    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    
+    $response = curl_exec($curl);
+    
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+    curl_close($curl);
+
+    if ($httpCode === 200) {
+        $data = json_decode($response, true);
+        echo $data['items'][0]['volumeInfo']['title'];
+    } else {
+        echo "Erro: $httpCode";
+    }
+    
+    file_put_contents('../temp/isbn_google_books_curl.txt', $response);
+}
+
+//fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:9788575224038').then(function(res) {
+//    return res.json()
+//}).then(function(res) {
+//    debugger
+//})

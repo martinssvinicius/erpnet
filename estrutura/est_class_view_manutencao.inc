@@ -23,6 +23,7 @@ abstract class ViewManutencao  {
 
     public function adicionaComponente($componente) {
         $this->componentes[] = $componente;
+        return $componente;
     }
 
     public abstract function criaComponentes();
@@ -41,6 +42,18 @@ abstract class ViewManutencao  {
     
     protected function loadComportamentoFromFile($sSigla, $sNome) {
 //        echo '<script></script>';
+    }
+    
+    protected function serial($nome, $titulo) {
+        return $this->adicionaComponente(new CampoForm(Campo::SERIAL, $nome, $titulo));
+    }
+    
+    protected function integer($nome, $titulo) {
+        return $this->adicionaComponente(new CampoForm(Campo::INTEGER, $nome, $titulo));
+    }
+    
+    protected function texto($nome, $titulo) {
+        return $this->adicionaComponente(new CampoForm(Campo::TEXTO, $nome, $titulo));
     }
     
 }
