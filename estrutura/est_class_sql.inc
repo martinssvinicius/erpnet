@@ -7,6 +7,8 @@
  */
 class SQL {
     
+    const OPERADOR_IGUAL = '=';
+    
     private $sql;
     
     public function set_sql($sql) {

@@ -117,4 +117,18 @@ abstract class PersistenciaPadrao {
         return $dados;
     }
     
+    public function getAllFromModel($oModel) {
+         $sql = "select *
+              from {$this->getTabela()}
+                  order by 1 desc
+                  
+              ";
+        foreach ($this->relacionamentos as $relacionamento) {
+            if ($relacionamento[2]) {
+//                $sql = $sql . " where $relacionamento[0] = 1";
+            }
+        }
+        $aDados = Conexao::getConexao()->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }

@@ -40,4 +40,17 @@ class Query extends SQL {
         return $this->prepare()->fetchAll(PDO::FETCH_OBJ);
     }
     
+    public function adiciona_condicao($sColuna, $sOperador, $sValor = '', $sValor2 = '') {
+        $sSql = $this->get_sql();
+        $iPosWhere = strpos($this->get_sql(), 'where');
+        $sSql .= $iPosWhere == false ? ' where ' : ' and ' ;
+        switch ($sOperador) {
+            case SQL::OPERADOR_IGUAL:
+                $sSql .= "$sColuna = $sValor";
+                break;
+        }
+        $this->set_sql($sSql);
+    }
+        
+    
 }

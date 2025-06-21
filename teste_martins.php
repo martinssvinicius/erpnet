@@ -120,7 +120,7 @@ function callApiOpenLibrary() {
     
 }
 
-callApiGoogleBooksCurl();
+//callApiGoogleBooksCurl();
 function callApiGoogleBooksCurl() {
     $url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:9788575224038';
     $curl = curl_init($url);
@@ -137,6 +137,17 @@ function callApiGoogleBooksCurl() {
 
     if ($httpCode === 200) {
         $data = json_decode($response, true);
+        
+        $info = isset($data['items'][0]['volumeInfo']) ? $data['items'][0]['volumeInfo'] : null;
+        if (!is_null($info)) {
+            $oModelObra = new ModelObra();
+            $oModelObra->setTitulo($info['title']);
+            $oModelObra->setSubtitulo($info['subtitle']);
+            $oModelObra->setIsbn($isbn);
+            $oModelObra->setNumPagina($info['pageCount']);
+            $oModelObra->setDataPublicacao($info['publishedDate']);
+        }
+        
         echo $data['items'][0]['volumeInfo']['title'];
     } else {
         echo "Erro: $httpCode";
@@ -150,3 +161,72 @@ function callApiGoogleBooksCurl() {
 //}).then(function(res) {
 //    debugger
 //})
+
+//readIsbnFromFile();
+function readIsbnFromFile() {
+    $data = file_get_contents('C:\vinicius.martins\Repositório\erpnet\temp\isbn9788575224038.json');
+    $data = json_decode($data, true);
+}
+
+print_r(lerMARC('../temp/teste1.mrc'));
+function lerMARC($arquivo) {
+    $conteudo = file_get_contents($arquivo);
+    $registros = explode("\x1D", $conteudo); // \x1D = fim de registro MARC
+
+    $dados = [];
+
+    foreach ($registros as $registro) {
+        if (trim($registro) === '') continue;
+
+        $leader = substr($registro, 0, 24); // Leader = 24 bytes
+        $baseAddress = intval(substr($leader, 12, 5)); // Início dos dados de campo
+
+        $directory = substr($registro, 24, $baseAddress - 25); // Directory termina em \x1E
+
+        $campos = [];
+        for ($i = 0; $i < strlen($directory); $i += 12) {
+            $tag = substr($directory, $i, 3);
+            $length = intval(substr($directory, $i + 3, 4));
+            $offset = intval(substr($directory, $i + 7, 5));
+            $conteudoCampo = substr($registro, $baseAddress + $offset, $length - 1); // -1 para remover o \x1E
+            $campos[$tag][] = $conteudoCampo;
+        }
+
+        // Extrair subcampos dos campos desejados
+        $extrairSubcampos = function($campo) {
+            $subcampos = explode("\x1F", $campo);
+            $resultado = [];
+            foreach ($subcampos as $s) {
+                if ($s === '') continue;
+                $codigo = substr($s, 0, 1);
+                $valor = substr($s, 1);
+                $resultado[$codigo] = $valor;
+            }
+            return $resultado;
+        };
+
+        // Pegando alguns campos padrão
+        if (!empty($campos['245'])) {
+            $sub = $extrairSubcampos($campos['245'][0]);
+            $dados['titulo'] = ($sub['a'] ?? '') . (isset($sub['b']) ? ": {$sub['b']}" : '');
+        }
+
+        if (!empty($campos['100'])) {
+            $sub = $extrairSubcampos($campos['100'][0]);
+            $dados['autor'] = $sub['a'] ?? '';
+        }
+
+        if (!empty($campos['020'])) {
+            $sub = $extrairSubcampos($campos['020'][0]);
+            $dados['isbn'] = $sub['a'] ?? '';
+        }
+
+        if (!empty($campos['260'])) {
+            $sub = $extrairSubcampos($campos['260'][0]);
+            $dados['editora'] = $sub['b'] ?? '';
+            $dados['ano'] = $sub['c'] ?? '';
+        }
+    }
+
+    return $dados;
+}
