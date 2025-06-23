@@ -35,6 +35,10 @@ abstract class ModelBoProcess implements InterfaceBusinessObjectProcess {
         
     }
     
+    protected function afterInclusao() {
+        
+    }
+    
     protected function beforeAlteracao() {
         $this->trataDadosInsere();
     }
@@ -46,7 +50,11 @@ abstract class ModelBoProcess implements InterfaceBusinessObjectProcess {
     
     public function processaInclusao() {
         $this->beforeInclusao();
-        return $this->getPersistencia()->insere();
+        if ($this->getPersistencia()->insere()) {
+            $this->afterInclusao();
+            return true;
+        }
+        return false;
     }
     
     public function processaAlteracao() {

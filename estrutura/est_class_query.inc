@@ -27,6 +27,9 @@ class Query extends SQL {
         return $this->prepare()->execute();
     }
     
+    /**
+     * @return PDOStatement
+     */
     public function prepare() {
         return $this->getConexao()->prepare($this->get_sql());
     }

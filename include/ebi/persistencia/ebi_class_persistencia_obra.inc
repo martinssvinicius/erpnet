@@ -17,11 +17,11 @@ class PersistenciaObra extends \PersistenciaPadrao {
         $this->addRelacionamentoAsVarchar('obrtitulo', 'titulo');
 //        $this->addRelacionamentoAsSmallint('caocodigo', '');
         $this->addRelacionamentoAsVarchar('obrsubtitulo', 'subtitulo');
-        $this->addRelacionamentoAsVarchar('artigotitulo', 'artigoTitulo');
+        $this->addRelacionamentoAsVarchar('obrartigotitulo', 'artigoTitulo');
 //        $this->addRelacionamentoAsSmallint('edtcodigo', '');
-        $this->addRelacionamentoAsSmallint('obranoedicacao', 'anoEdicacao');
-        $this->addRelacionamentoAsSmallint('obrnumedicacao', 'numEdicacao');
-        $this->addRelacionamentoAsVarchar('obrnomeedicacao', 'nomeEdicacao');
+        $this->addRelacionamentoAsSmallint('obranoedicao', 'anoEdicao');
+        $this->addRelacionamentoAsSmallint('obrnumedicao', 'numEdicao');
+        $this->addRelacionamentoAsVarchar('obrnomeedicao', 'nomeEdicao');
         $this->addRelacionamentoAsDate('obrdatapublicacao', 'dataPublicacao');
 //        $this->addRelacionamentoAsInt('lpbcodigo', '');
     }

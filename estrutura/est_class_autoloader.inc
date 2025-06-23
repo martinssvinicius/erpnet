@@ -32,9 +32,15 @@ spl_autoload_register(function($classe) {
     require_once 'est_class_view_consulta.inc';
     require_once 'est_class_view_manutencao.inc';
     
+    /**
+     * a mais
+     */
+    require_once 'est_class_elasticsearch_handler.inc';
+    
+    
     $pieces = explode('\\', $classe);
     
-    if (isset($pieces[1])) {
+    if (isset($pieces[1]) && isset($pieces[2])) {
         $output = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $pieces[2]));
         if ($pieces[1] == 'Enum') {
             $caminho = "../include/".strtolower($pieces[0])."/model/".strtolower($pieces[1])."/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
@@ -44,7 +50,7 @@ spl_autoload_register(function($classe) {
         } else if ($pieces[2] == 'Bo') {
             $output = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $pieces[3]));
             $caminho = "../include/".strtolower($pieces[0])."/model/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
-        } else {
+        } else if (isset($pieces[0]) && isset($pieces[1])) {
             $caminho = "../include/".strtolower($pieces[0])."/".strtolower($pieces[1])."/".strtolower($pieces[0]).'_class_'.$output.'.inc'; 
         }
         if (file_exists($caminho)) {

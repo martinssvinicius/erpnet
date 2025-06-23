@@ -168,7 +168,7 @@ function readIsbnFromFile() {
     $data = json_decode($data, true);
 }
 
-print_r(lerMARC('../temp/teste1.mrc'));
+//print_r(lerMARC('../temp/teste1.mrc'));
 function lerMARC($arquivo) {
     $conteudo = file_get_contents($arquivo);
     $registros = explode("\x1D", $conteudo); // \x1D = fim de registro MARC
@@ -229,4 +229,54 @@ function lerMARC($arquivo) {
     }
 
     return $dados;
+}
+
+require 'estrutura/vendor/autoload.php';
+use Elastic\Elasticsearch\ClientBuilder;
+//testeElasticSearchIndex();
+function testeElasticSearchIndex() {
+    $client = ClientBuilder::create()
+        ->setHosts(['localhost:9200'])
+        ->build();
+    
+    $params = [
+        'index' => 'livros',
+        'id' => '1',
+        'body' => [
+            'titulo' => 'Dom Casmurro',
+            'autor' => 'Machado de Assis',
+            'ano'   => 1899
+        ]
+    ];
+    $response = $client->index($params);
+//    print_r($response);
+    
+}
+
+testeElasticSearchSearch();
+function testeElasticSearchSearch() {
+    
+    $client = ClientBuilder::create()
+        ->setHosts(['localhost:9200'])
+        ->build();
+    
+    $params = [
+        'index' => 'livros',
+        'body'  => [
+            'query' => [
+                'match' => [
+                    'autor' => 'Machado'
+                ]
+            ]
+        ]
+    ];
+    
+    $response = $client->search($params);
+//    print_r($response);
+    
+    foreach ($response['hits']['hits'] as $hit) {
+    echo $hit['_source']['titulo'] . " - " . $hit['_source']['autor'] . "<br>";
+}
+
+    
 }

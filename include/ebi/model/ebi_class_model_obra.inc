@@ -11,9 +11,9 @@ class ModelObra {
     private $titulo;
     private $subtitulo;
     private $artigoTitulo;
-    private $anoEdicacao;
-    private $numEdicacao;
-    private $nomeEdicacao;
+    private $anoEdicao;
+    private $numEdicao;
+    private $nomeEdicao;
     private $dataPublicacao;
     
     public function getCodigo() {
@@ -32,16 +32,16 @@ class ModelObra {
         return $this->artigoTitulo;
     }
 
-    public function getAnoEdicacao() {
-        return $this->anoEdicacao;
+    public function getAnoEdicao() {
+        return $this->anoEdicao;
     }
 
-    public function getNumEdicacao() {
-        return $this->numEdicacao;
+    public function getNumEdicao() {
+        return $this->numEdicao;
     }
 
-    public function getNomeEdicacao() {
-        return $this->nomeEdicacao;
+    public function getNomeEdicao() {
+        return $this->nomeEdicao;
     }
 
     public function getDataPublicacao() {
@@ -64,16 +64,16 @@ class ModelObra {
         $this->artigoTitulo = $artigoTitulo;
     }
 
-    public function setAnoEdicacao($anoEdicacao) {
-        $this->anoEdicacao = $anoEdicacao;
+    public function setAnoEdicao($anoEdicao) {
+        $this->anoEdicao = $anoEdicao;
     }
 
-    public function setNumEdicacao($numEdicacao) {
-        $this->numEdicacao = $numEdicacao;
+    public function setNumEdicao($numEdicao) {
+        $this->numEdicao = $numEdicao;
     }
 
     public function setNomeEdicacao($nomeEdicacao) {
-        $this->nomeEdicacao = $nomeEdicacao;
+        $this->nomeEdicao = $nomeEdicacao;
     }
 
     public function setDataPublicacao($dataPublicacao) {

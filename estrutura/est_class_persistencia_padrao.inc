@@ -81,9 +81,15 @@ abstract class PersistenciaPadrao {
             }
             $aColuna[] = $relacionamento[0];
             if (isset($relacionamento[3]) && $relacionamento[3]) {
-                $aValor[] = '\''.Bean::callGetter($this->Model, $relacionamento[1]).'\'';
+                $iValor = Bean::callGetter($this->Model, $relacionamento[1]);
+                if ($iValor) {
+                    $aValor[] = '\''.$iValor.'\'';
+                } else {
+                    $aValor[] = 'null';
+                }
+                
             } else {
-                $aValor[] = Bean::callGetter($this->Model, $relacionamento[1]);
+                $aValor[] = Bean::callGetter($this->Model, $relacionamento[1]) ?: 'null';
             }
         };
         
@@ -110,7 +116,7 @@ abstract class PersistenciaPadrao {
         return Conexao::getConexao()->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public function getFirstFromSql(\SQL $oSql) {
+    public function getFirstFromSql(SQL $oSql) {
         $oQuery = new Query();
         $oQuery->set_sql($oSql->get_sql());
         $dados = $oQuery->fetch_array();

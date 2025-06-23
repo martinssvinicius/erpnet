@@ -9,6 +9,6 @@ use ControllerManutencao;
  *
  * @author marti
  */
-class ControllerManutencaoObra extends ControllerManutencao {
+class ControllerManutencaoObra extends \ControllerManutencaoBoProcess {
     
 }
