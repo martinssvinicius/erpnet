@@ -253,7 +253,7 @@ function testeElasticSearchIndex() {
     
 }
 
-testeElasticSearchSearch();
+//testeElasticSearchSearch();
 function testeElasticSearchSearch() {
     
     $client = ClientBuilder::create()
@@ -275,8 +275,183 @@ function testeElasticSearchSearch() {
 //    print_r($response);
     
     foreach ($response['hits']['hits'] as $hit) {
-    echo $hit['_source']['titulo'] . " - " . $hit['_source']['autor'] . "<br>";
-}
+        echo $hit['_source']['titulo'] . " - " . $hit['_source']['autor'] . "<br>";
+    }
 
     
+}
+
+//lerMARCAutor();
+function lerMARCAutor() {
+//    $arquivo = '../temp/teste1.mrc';
+    $arquivo = '../temp/records (1).mrc';
+    $conteudo = file_get_contents($arquivo);
+    $registros = explode("\x1D", $conteudo); // separador de registro MARC
+
+    $dadosAutores = [];
+
+    foreach ($registros as $registro) {
+        if (empty($registro)) continue;
+
+        $autor = '';
+        $sobrenome = '';
+        $nome = '';
+        $tipoAutor = 'Autor';
+        $cutter = '';
+        $referencia = trim($registro);
+
+        // extrair campo 100 (autor principal) ou 700 (autor adicional)
+        if (preg_match('/100..\\$a([^\\$]+)(\\$e([^\\$]+))?/u', $registro, $matches) ||
+            preg_match('/700..\\$a([^\\$]+)(\\$e([^\\$]+))?/u', $registro, $matches)) {
+
+            $nomeCompleto = trim($matches[1]);
+            $tipoAutor = isset($matches[3]) ? trim($matches[3]) : 'Autor';
+
+            $partes = explode(',', $nomeCompleto);
+            $sobrenome = trim($partes[0] ?? '');
+            $nome = trim($partes[1] ?? '');
+        }
+
+        // extrair campo 090 ou 050 (para código Cutter)
+        if (preg_match('/090..\\$b([^\\$]+)/u', $registro, $matches) ||
+            preg_match('/050..\\$b([^\\$]+)/u', $registro, $matches)) {
+            $cutter = trim($matches[1]);
+        }
+
+        if ($nome || $sobrenome) {
+            $dadosAutores[] = [
+                'nome'       => $nome,
+                'sobrenome'  => $sobrenome,
+                'tipo'       => $tipoAutor,
+                'cutter'     => $cutter,
+                'referencia' => $referencia,
+            ];
+        }
+    }
+
+    return $dadosAutores;
+}
+
+function lerMarcAutorLib() {
+    
+}
+
+//extrairAutorDeMARC();
+function extrairAutorDeMARC() {
+//    $caminhoArquivo = '../temp/teste1.mrc';
+//    $caminhoArquivo = '../temp/_el_hombre_mediocre;_ensa_iso.txt';
+    $caminhoArquivo = '../temp/records (1).mrc';
+    $dadosAutor = [];
+
+    require_once __DIR__ . '/estrutura/libs/File_MARC-1.4.1/File/MARC.php';
+    
+    $marc = new File_MARC($caminhoArquivo);
+
+    while ($record = $marc->next()) {
+        $campo100 = $record->getField('100'); // Autor principal
+        $campo700 = $record->getField('700'); // Autor adicional
+
+        $autor = $campo100 ?: $campo700;
+
+        if ($autor) {
+            $suba = $autor->getSubfield('a'); // Nome completo
+            $sube = $autor->getSubfield('e'); // Tipo de autor (ex: organizador, tradutor)
+            $subc = $autor->getSubfield('c'); // Informações complementares (ex: título, cargo)
+
+            $nomeCompleto = trim($suba ? $suba->getData() : '');
+            $tipoAutor    = trim($sube ? $sube->getData() : '');
+            $complemento  = trim($subc ? $subc->getData() : '');
+
+            // Quebra em nome e sobrenome (pode ser adaptado conforme formato)
+            $partes = explode(',', $nomeCompleto);
+            $sobrenome = trim($partes[0] ?? '');
+            $nome      = trim($partes[1] ?? '');
+
+            // Cutter (se presente no campo 090 subcampo b, ou campo 050 subcampo b)
+            $cutter = '';
+            $campo090 = $record->getField('090');
+            if ($campo090) {
+                $subb = $campo090->getSubfield('b');
+                $cutter = $subb ? trim($subb->getData()) : '';
+            }
+
+            // Referência bibliográfica básica
+            $referencia = $record->toRaw();
+
+            $dadosAutor[] = [
+                'nome'       => $nome,
+                'sobrenome'  => $sobrenome,
+                'tipo'       => $tipoAutor ?: 'Autor',
+                'cutter'     => $cutter,
+                'referencia' => $referencia,
+            ];
+        }
+    }
+
+    return $dadosAutor;
+}
+
+function myMarcReader() {
+    
+    $caminhoArquivo = '../temp/records (1).mrc';
+    
+    $this->xmlwriter = new XMLWriter();
+    $this->xmlwriter->openMemory();
+    $this->xmlwriter->startDocument('1.0', 'UTF-8');
+    
+    $this->source = fopen($caminhoArquivo, 'rb');
+    
+    $record = stream_get_line($this->source, 99999, "\x1D");
+    $record = preg_replace('/^[\\x0a\\x0d\\x00]+/', "", $record);
+    $record .= "\x1D";
+    
+    
+}
+
+lerMRCBinario();
+function lerMRCBinario() {
+    $arquivo = '../temp/records (1).mrc';
+    $conteudo = file_get_contents($arquivo);
+    $registros = explode("\x1D", $conteudo); // separador MARC de registros
+
+    $dados = [];
+
+    foreach ($registros as $registro) {
+        if (strlen($registro) < 24) continue;
+
+        $tamanhoRegistro = (int)substr($registro, 0, 5);
+        $baseEnd = (int)substr($registro, 12, 5);
+        $diretorio = substr($registro, 24, $baseEnd - 24);
+        $dadosCampos = substr($registro, $baseEnd);
+
+        $campos = [];
+
+        for ($i = 0; $i < strlen($diretorio); $i += 12) {
+            $tag = substr($diretorio, $i, 3);
+            $length = (int)substr($diretorio, $i + 3, 4);
+            $start = (int)substr($diretorio, $i + 7, 5);
+            $valor = substr($dadosCampos, $start, $length - 1); // remove terminador
+
+            $campos[$tag][] = $valor;
+        }
+
+        // campo 100 (autor principal)
+        $campo100 = $campos['100'][0] ?? '';
+        $autor = '';
+        if ($campo100) {
+            $subcampos = explode("\x1F", $campo100); // separador de subcampo
+            foreach ($subcampos as $sub) {
+                if (str_starts_with($sub, 'a')) {
+                    $autor = trim(substr($sub, 1));
+                }
+            }
+        }
+
+        $dados[] = [
+            'autor' => $autor,
+            'raw'   => $registro,
+        ];
+    }
+
+    return $dados;
 }
