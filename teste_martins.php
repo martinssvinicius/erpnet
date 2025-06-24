@@ -408,7 +408,7 @@ function myMarcReader() {
     
 }
 
-lerMRCBinario();
+//lerMRCBinario();
 function lerMRCBinario() {
     $arquivo = '../temp/records (1).mrc';
     $conteudo = file_get_contents($arquivo);
@@ -454,4 +454,60 @@ function lerMRCBinario() {
     }
 
     return $dados;
+}
+
+readMyFileMarc();
+function readMyFileMarc() {
+//    $caminhoArquivo = '../temp/teste1.mrc';
+//    $caminhoArquivo = '../temp/_el_hombre_mediocre;_ensa_iso.txt';
+    $caminhoArquivo = '../temp/records (1).mrc';
+    $dadosAutor = [];
+
+//    require_once __DIR__ . '/estrutura/libs/File_MARC-1.4.1/File/MARC.php';
+    
+    $marc = new \Ebi\View\ViewFileMarc($caminhoArquivo);
+
+    while ($record = $marc->next()) {
+        $campo100 = $record->getField('100'); // Autor principal
+        $campo700 = $record->getField('700'); // Autor adicional
+
+        $autor = $campo100 ?: $campo700;
+
+        if ($autor) {
+            $suba = $autor->getSubfield('a'); // Nome completo
+            $sube = $autor->getSubfield('e'); // Tipo de autor (ex: organizador, tradutor)
+            $subc = $autor->getSubfield('c'); // Informações complementares (ex: título, cargo)
+
+            $nomeCompleto = trim($suba ? $suba->getData() : '');
+            $tipoAutor    = trim($sube ? $sube->getData() : '');
+            $complemento  = trim($subc ? $subc->getData() : '');
+
+            // Quebra em nome e sobrenome (pode ser adaptado conforme formato)
+            $partes = explode(',', $nomeCompleto);
+            $sobrenome = trim($partes[0] ?? '');
+            $nome      = trim($partes[1] ?? '');
+
+            // Cutter (se presente no campo 090 subcampo b, ou campo 050 subcampo b)
+            $cutter = '';
+            $campo090 = $record->getField('090');
+            if ($campo090) {
+                $subb = $campo090->getSubfield('b');
+                $cutter = $subb ? trim($subb->getData()) : '';
+            }
+
+            // Referência bibliográfica básica
+            $referencia = $record->toRaw();
+
+            $dadosAutor[] = [
+                'nome'       => $nome,
+                'sobrenome'  => $sobrenome,
+                'tipo'       => $tipoAutor ?: 'Autor',
+                'cutter'     => $cutter,
+                'referencia' => $referencia,
+            ];
+        }
+    }
+
+//    return $dadosAutor;
+    print_r($dadosAutor);
 }
