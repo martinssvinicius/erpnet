@@ -10,8 +10,8 @@ use XMLWriter;
  *
  * @author marti
  */
-class ViewFileMarc extends ViewFileMarcBase {
-    
+class ViewFileMarc {
+
     /**
      * MARC records retrieved from a file
      */
@@ -74,6 +74,13 @@ class ViewFileMarc extends ViewFileMarcBase {
     protected $xmlwriter;
 
     /**
+     * Record class
+     *
+     * @var string
+     */
+    protected $record_class;
+
+    /**
      * Read in MARC records
      *
      * This function reads in MARC record files or strings that
@@ -93,29 +100,32 @@ class ViewFileMarc extends ViewFileMarcBase {
      * @param int    $type          Source of the input, either SOURCE_FILE or SOURCE_STRING
      * @param string $record_class  Record class, defaults to ViewFileMarc_Record
      */
-    function __construct($source, $type = self::SOURCE_FILE, $record_class = null)
-    {
+    function __construct($source, $type = self::SOURCE_FILE, $record_class = null) {
 
-        parent::__construct($source, $type, $record_class);
+        $this->xmlwriter = new XMLWriter();
+        $this->xmlwriter->openMemory();
+        $this->xmlwriter->startDocument('1.0', 'UTF-8');
+
+        $this->record_class = $record_class ?: ViewFileMarcRecord::class;
 
         switch ($type) {
 
-        case self::SOURCE_FILE:
-            $this->type = self::SOURCE_FILE;
-            $this->source = fopen($source, 'rb');
-            if (!$this->source) {
-                 $errorMessage = ViewFileMarcException::formatError(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_INVALID_FILE], array('filename' => $source));
-                 throw new ViewFileMarcException($errorMessage, ViewFileMarcException::ERROR_INVALID_FILE);
-            }
-            break;
+            case self::SOURCE_FILE:
+                $this->type = self::SOURCE_FILE;
+                $this->source = fopen($source, 'rb');
+                if (!$this->source) {
+                    $errorMessage = ViewFileMarcException::formatError(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_INVALID_FILE], array('filename' => $source));
+                    throw new ViewFileMarcException($errorMessage, ViewFileMarcException::ERROR_INVALID_FILE);
+                }
+                break;
 
-        case self::SOURCE_STRING:
-            $this->type = self::SOURCE_STRING;
-            $this->source = explode(ViewFileMarc::END_OF_RECORD, $source);
-            break;
+            case self::SOURCE_STRING:
+                $this->type = self::SOURCE_STRING;
+                $this->source = explode(ViewFileMarc::END_OF_RECORD, $source);
+                break;
 
-        default:
-            throw new ViewFileMarcException(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_INVALID_SOURCE], ViewFileMarcException::ERROR_INVALID_SOURCE);
+            default:
+                throw new ViewFileMarcException(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_INVALID_SOURCE], ViewFileMarcException::ERROR_INVALID_SOURCE);
         }
     }
 
@@ -127,14 +137,12 @@ class ViewFileMarc extends ViewFileMarcBase {
      *
      * @return string Either a raw record or false
      */
-    function nextRaw()
-    {
+    function nextRaw() {
         if ($this->type == self::SOURCE_FILE) {
             $record = stream_get_line($this->source, ViewFileMarc::MAX_RECORD_LENGTH, ViewFileMarc::END_OF_RECORD);
 
             // Remove illegal stuff that sometimes occurs between records
             $record = preg_replace('/^[\\x0a\\x0d\\x00]+/', "", $record);
-
         } elseif ($this->type == self::SOURCE_STRING) {
             $record = array_shift($this->source);
         }
@@ -171,8 +179,7 @@ class ViewFileMarc extends ViewFileMarcBase {
      * @return ViewFileMarc_Record next record, or false if there are
      * no more records
      */
-    function next()
-    {
+    function next() {
         $raw = $this->nextRaw();
         if ($raw) {
             return $this->_decode($raw);
@@ -190,8 +197,7 @@ class ViewFileMarc extends ViewFileMarcBase {
      *
      * @return ViewFileMarc_Record Decoded ViewFileMarc_Record object
      */
-    private function _decode($text)
-    {
+    private function _decode($text) {
         $marc = new $this->record_class($this);
 
         // fallback on the actual byte length
@@ -211,7 +217,7 @@ class ViewFileMarc extends ViewFileMarcBase {
         }
 
         if (substr($text, -1, 1) != ViewFileMarc::END_OF_RECORD)
-             throw new ViewFileMarcException(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_INVALID_TERMINATOR], ViewFileMarcException::ERROR_INVALID_TERMINATOR);
+            throw new ViewFileMarcException(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_INVALID_TERMINATOR], ViewFileMarcException::ERROR_INVALID_TERMINATOR);
 
         // Store leader
         $marc->setLeader(substr($text, 0, ViewFileMarc::LEADER_LEN));
@@ -221,9 +227,8 @@ class ViewFileMarc extends ViewFileMarcBase {
 
         // immediately after the leader comes the directory (no separator)
         $dir = substr($text, ViewFileMarc::LEADER_LEN, $data_start - ViewFileMarc::LEADER_LEN - 1);  // -1 to allow for \x1e at end of directory
-
         // character after the directory must be \x1e
-        if (substr($text, $data_start-1, 1) != ViewFileMarc::END_OF_FIELD) {
+        if (substr($text, $data_start - 1, 1) != ViewFileMarc::END_OF_FIELD) {
             $marc->addWarning(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_NO_DIRECTORY]);
         }
 
@@ -234,11 +239,11 @@ class ViewFileMarc extends ViewFileMarcBase {
 
         // go through all the fields
         $nfields = strlen($dir) / ViewFileMarc::DIRECTORY_ENTRY_LEN;
-        for ($n=0; $n<$nfields; $n++) {
+        for ($n = 0; $n < $nfields; $n++) {
             // As pack returns to key 1, leave place 0 in list empty
-            list(, $tag) = unpack("A3", substr($dir, $n*ViewFileMarc::DIRECTORY_ENTRY_LEN, ViewFileMarc::DIRECTORY_ENTRY_LEN));
-            list(, $len) = unpack("A3/A4", substr($dir, $n*ViewFileMarc::DIRECTORY_ENTRY_LEN, ViewFileMarc::DIRECTORY_ENTRY_LEN));
-            list(, $offset) = unpack("A3/A4/A5", substr($dir, $n*ViewFileMarc::DIRECTORY_ENTRY_LEN, ViewFileMarc::DIRECTORY_ENTRY_LEN));
+            list(, $tag) = unpack("A3", substr($dir, $n * ViewFileMarc::DIRECTORY_ENTRY_LEN, ViewFileMarc::DIRECTORY_ENTRY_LEN));
+            list(, $len) = unpack("A3/A4", substr($dir, $n * ViewFileMarc::DIRECTORY_ENTRY_LEN, ViewFileMarc::DIRECTORY_ENTRY_LEN));
+            list(, $offset) = unpack("A3/A4/A5", substr($dir, $n * ViewFileMarc::DIRECTORY_ENTRY_LEN, ViewFileMarc::DIRECTORY_ENTRY_LEN));
 
             // Check directory validity
             if (!preg_match("/^[0-9A-Za-z]{3}$/", $tag)) {
@@ -278,7 +283,7 @@ class ViewFileMarc extends ViewFileMarcBase {
                         $ind1 = $indicators;
                         $ind2 = " ";
                     } else {
-                        list($ind1,$ind2) = array(" ", " ");
+                        list($ind1, $ind2) = array(" ", " ");
                     }
                 } else {
                     $ind1 = substr($indicators, 0, 1);
@@ -291,14 +296,14 @@ class ViewFileMarc extends ViewFileMarcBase {
                     if (strlen($subfield) > 0) {
                         $subfield_data[] = new ViewFileMarcSubfield(substr($subfield, 0, 1), substr($subfield, 1));
                     } else {
-                         $errorMessage = ViewFileMarcException::formatError(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_EMPTY_SUBFIELD], array("tag" => $tag));
-                         $marc->addWarning($errorMessage);
+                        $errorMessage = ViewFileMarcException::formatError(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_EMPTY_SUBFIELD], array("tag" => $tag));
+                        $marc->addWarning($errorMessage);
                     }
                 }
 
                 if (!isset($subfield_data)) {
-                     $errorMessage = ViewFileMarcException::formatError(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_EMPTY_SUBFIELD], array("tag" => $tag));
-                     $marc->addWarning($errorMessage);
+                    $errorMessage = ViewFileMarcException::formatError(ViewFileMarcException::$messages[ViewFileMarcException::ERROR_EMPTY_SUBFIELD], array("tag" => $tag));
+                    $marc->addWarning($errorMessage);
                 }
 
 
@@ -314,5 +319,47 @@ class ViewFileMarc extends ViewFileMarcBase {
 
         return $marc;
     }
-    
+
+    /**
+     * Initializes the MARCXML output of a record or collection of records 
+     *
+     * This method produces an XML representation of a MARC record that
+     * attempts to adhere to the MARCXML standard documented at
+     * http://www.loc.gov/standards/marcxml/
+     *
+     * @return bool true if successful
+     */
+    function toXMLHeader() {
+        $this->xmlwriter->startElement("collection");
+        $this->xmlwriter->writeAttribute("xmlns", "http://www.loc.gov/MARC21/slim");
+        return true;
+    }
+
+    /**
+     * Returns the XMLWriter object
+     *
+     * This method produces an XML representation of a MARC record that
+     * attempts to adhere to the MARCXML standard documented at
+     * http://www.loc.gov/standards/marcxml/
+     *
+     * @return XMLWriter XMLWriter instance
+     */
+    function getXMLWriter() {
+        return $this->xmlwriter;
+    }
+
+    /**
+     * Returns the MARCXML collection footer
+     *
+     * This method produces an XML representation of a MARC record that
+     * attempts to adhere to the MARCXML standard documented at
+     * http://www.loc.gov/standards/marcxml/
+     *
+     * @return string           representation of MARC record in MARCXML format
+     */
+    function toXMLFooter() {
+        $this->xmlwriter->endElement(); // end collection
+        $this->xmlwriter->endDocument();
+        return $this->xmlwriter->outputMemory();
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace Ebi\Model;
+
 /**
  * Description of ebi_class_model_obra
  *

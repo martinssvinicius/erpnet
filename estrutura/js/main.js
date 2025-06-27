@@ -1,8 +1,6 @@
 const imgPreload = new Image();
 imgPreload.src = '/imagens/imagem_temas_padrao_large_loading.gif';
 
-document.cookie = 'XDEBUG_SESSION=VSCODE';
-
 function bloqueiaJanela(janela) {
     if (!janela) {
         janela = document.body;

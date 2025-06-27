@@ -36,3 +36,7 @@ if (str_starts_with($path, '/erpnet/sistema/')) {
 
 
 http_response_code(404);
+?>
+<script>
+    document.cookie = 'XDEBUG_SESSION=VSCODE';
+</script>
