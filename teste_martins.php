@@ -456,7 +456,7 @@ function lerMRCBinario() {
     return $dados;
 }
 
-readMyFileMarc();
+//readMyFileMarc();
 function readMyFileMarc() {
 //    $caminhoArquivo = '../temp/teste1.mrc';
 //    $caminhoArquivo = '../temp/_el_hombre_mediocre;_ensa_iso.txt';
@@ -511,3 +511,215 @@ function readMyFileMarc() {
 //    return $dadosAutor;
     print_r($dadosAutor);
 }
+
+function testeSeila() {
+//        $this->testeSoapServer();
+    return response()->file(public_path('teste.html'));
+}
+    
+function testeSoapServer() {
+    $client = new \SoapClient("http://localhost/calculadora.wsdl");
+    $response = $client->__soapCall("somar", [["a" => 10, "b" => 20]]);
+    echo "Resultado: " . $response->resultado;
+}
+
+function testeCUrlPost() {
+    $data = [
+        "title" => "Teste",
+        "body" => "Conteúdo aqui",
+        "userId" => 1
+    ];
+
+    $ch = curl_init("https://jsonplaceholder.typicode.com/posts");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $result = json_decode($response, true);
+    echo "ID criado: " . $result["id"];
+}
+
+function testeCUrlGet() {
+    $ch = curl_init("https://jsonplaceholder.typicode.com/posts/1");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+    echo "Título: " . $data["title"];
+}
+
+function testeApiRest() {
+    $url = "https://jsonplaceholder.typicode.com/posts/1";
+    $response = file_get_contents($url);
+
+    $data = json_decode($response, true);
+    echo "Título: " . $data["title"];
+}
+
+function testeMicrotime() {
+    $ini = microtime(true);
+    foreach ($this->returnYield() as $el) {
+//        foreach ($this->returnYieldArray() as $el) {
+        echo $el;
+    }
+    echo '<br>'.(microtime(true) - $ini);
+}
+
+function testeHintEdu() {
+    $dados = [
+        'label1' => 'valor1',
+        'label2' => 'valor2',
+        'label3' => 'valor3',
+    ];
+
+    echo '<table>TITULO GERAL';
+    foreach ($dados as $label => $valor) {
+        echo "<tr style=\"display:flex !important;\"><td><b> $label: </b> $valor</td></tr>";
+    }
+    echo '</table>';
+}
+
+function testeApiSoap() {
+    $client = new \SoapClient('http://www.dneonline.com/calculator.asmx?WSDL');
+    $response = $client->__soapCall('Add', [[
+        'intA' => 10,
+        'intB' => 20
+    ]]);
+}
+
+function arrayToNode() {
+//        $result = \App\Http\Utils::arrayToList([1,2,3,4,5]);
+//        print_r($result);
+}
+
+function nodeListProblem() {
+    $lists = [
+        new ListNode(1, new ListNode(4, new ListNode(5))),
+        new ListNode(1, new ListNode(3, new ListNode(4))),
+        new ListNode(2, new ListNode(6)),
+    ];
+
+    $listNodeToArray = function(ListNode $ListNode) use (&$listNodeToArray, &$result) {
+        foreach ($ListNode as $List) {
+            if ($List instanceof ListNode) {
+                $listNodeToArray($List);
+            } else if (!is_null($List)) {
+                $result[] = $List;
+            }
+        }
+    };
+    $newList = [];
+    foreach ($lists as $list) {
+        if (!($list instanceof ListNode)) {
+            continue;
+        }
+        $result = [];
+        $listNodeToArray($list);
+        $newList = array_merge($newList,$result);
+    }
+    rsort($newList);
+    $newLisNode = null;
+    foreach ($newList as $index => $val) {
+        $newLisNode = new ListNode($val, $newLisNode);
+    }
+    return $newLisNode;
+}
+
+function getYield() {
+//        foreach () ;
+}
+
+function returnYieldArray() {
+    $a = [];
+    for ($i = 1; $i < 1000000; $i++) {
+        $a[] = $i;
+    }
+    return $a;
+}
+
+function returnYield() {
+    for ($i = 1; $i < 1000000; $i++) {
+        yield $i;
+    }
+}
+
+processaPhpOffice();
+function processaPhpOffice() {
+//    require_once 'C:\vinicius.martins\Repositório\erpnet\estrutura\libs\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php'; 
+    
+   $aFile = file_get_contents('../temp/layout_de_importacao_e_exportacao_2025.xlsx');
+//    $oSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($aFile['tmp_name']);
+    $oSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('../temp/layout_de_importacao_e_exportacao_2025.xlsx');
+//        $sheet = $spreadsheet->getActiveSheet();
+    $aGrupo = [
+        '10',
+        '20',
+        '30',
+        '40',
+    ];
+    foreach ($aGrupo as $sGrupo) {
+        $oWorkSheet = $oSpreadsheet->getSheetByName($sGrupo);
+        foreach ($oWorkSheet->getRowIterator() as $oRow) {
+            $iLinha = $oRow->getRowIndex();
+            $sCodigo = $oWorkSheet->getCell("A{$iLinha}")->getValue();
+            if (is_int($sCodigo)) {
+                $sNomeCampo = $oWorkSheet->getCell("B{$iLinha}")->getValue();
+                $oContentColumnC = $oWorkSheet->getCell("C{$iLinha}")->getValue();
+                $sNomeFormatado = str_replace(' ', '', ucwords(str_replace('_', ' ', $sNomeCampo)));
+                if (isset($aIntervaloCodigo) && $sCodigo >= $aIntervaloCodigo[0] && $sCodigo <= $aIntervaloCodigo[1]) {
+                    $sNomeFormatado = $sNomeAgrupadorFormatado . $sNomeFormatado;
+                }
+                if ($oContentColumnC instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
+                    $sInfoBasica = $oContentColumnC->getPlainText();
+                    $sInfoBasica = preg_replace('/Tamanho máximo:|Tamanho fixo:|Formato:|Obrigatório:/', '', $sInfoBasica);
+                    $aInfoBasica = explode(ENTER, $sInfoBasica);
+                    $aInfoBasica = array_map(function($sInfo) {
+                        return trim($sInfo);
+                    }, $aInfoBasica);
+                    if (!empty($aInfoBasica)) {
+                        $tamanho = $aInfoBasica[0];
+                        $tamFixo = $aInfoBasica[1] == 'Sim' ? 1 : 0;
+                        $formato = $aInfoBasica[2];
+                        $obrigatorio = $aInfoBasica[3];
+                    }
+                }
+                \Illuminate\Support\Facades\DB::statement("insert into public.tblayout values ("
+                        . "$sCodigo, "
+                        . "'$sGrupo',"
+                        . "'$sNomeFormatado',"
+                        . "'$sNomeCampo',"
+                        . "$tamanho,"
+                        . "$tamFixo,"
+                        . "'$formato',"
+                        . "'$obrigatorio'"
+                        . ")");
+            } else if (str_contains($sCodigo, ' a ')) {
+                $aIntervaloCodigo = explode(' a ', $sCodigo);
+                $sTituloAgrupador = $oWorkSheet->getCell("B{$iLinha}")->getValue();
+                $sNomeAgrupadorFormatado = str_replace(' ', '', ucwords(str_replace('_', ' ', $sTituloAgrupador)));
+            }
+        }
+    }
+}
+
+class ListNode {
+    
+    public $val = 0;
+    public $next = null;
+    function __construct($val = 0, $next = null) {
+        $this->val = $val;
+        $this->next = $next;
+    }
+    
+}
+
+define('ENTER', '
+');

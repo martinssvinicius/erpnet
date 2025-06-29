@@ -13,12 +13,24 @@ use File_MARC;
 class ControllerManutencaoTeste extends ControllerManutencao {
     
     public function processaDadosInclusao() {
+        require_once 'C:\vinicius.martins\Repositório\erpnet\estrutura\libs\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php';
+        //    $oSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($aFile['tmp_name']);
+//        $oSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('../temp/layout_de_importacao_e_exportacao_2025.xlsx');
+        $oSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($_FILES['teste']['tmp_name']);
         
         
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/libs/File_MARC-1.4.1/File/MARC.php';
-        require_once $path;
+//        $url = 'https://books.google.com/books/content?id=f7JVBQAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api';
+//        $data = file_get_contents($url);
+//        file_put_contents("isbn.jpg", $data);
         
-        $marcFile = new File_MARC('caminho/para/seuarquivo.mrc');
+        
+        
+        
+        
+//        $path = $_SERVER['DOCUMENT_ROOT'] . '/libs/File_MARC-1.4.1/File/MARC.php';
+//        require_once $path;
+//        
+//        $marcFile = new File_MARC('caminho/para/seuarquivo.mrc');
         
 //        parent::processaDadosInclusao();
 //        throw \Exception();
