@@ -975,3 +975,13 @@ function testeCharsetBd() {
     </script>
     <?php        
 }
+
+//$mapa_correcao = [
+//    'Ã§' => 'ç',
+//    'Ã£' => 'ã',
+//    'Ã¡' => 'á',
+//    'Ã³' => 'ó',
+//    'Ã©' => 'é',
+//    'Ãª' => 'ê',
+//    'Ã ' => 'à'  // Espaço pode variar
+//];
