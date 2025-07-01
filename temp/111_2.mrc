@@ -1,0 +1,1 @@
+00275nz  a2200097n  45000010008000000030006000080050017000140080039000311110084000706700023001541100002BR-Bn20250627114400.0240101n||azannaabn||||||||||n|aaa|||||2 aEncontro Nacional de Educação Matemátican(10. :d2023 :cBelo Horizonte)  aAnais do 10º ENEM

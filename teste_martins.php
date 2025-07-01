@@ -10,7 +10,7 @@ function writeFileMarc() {
 
     $record = new File_MARC_Record();
 
-    // Adicionar campo 245 (tÃ­tulo)
+    // Adicionar campo 245 (título)
     $title = new File_MARC_Data_Field('245', [
         new File_MARC_Subfield('a', 'Dom Casmurro'),
         new File_MARC_Subfield('b', 'romance brasileiro')
@@ -26,14 +26,14 @@ function writeFileMarc() {
 
     file_put_contents('/temp/livro.mrc', 'teste');
 
-    // 2. Adicionar campos (exemplo: livro fictÃ­cio)
-    // Campo 245: TÃ­tulo (ind1=1, ind2=0)
+    // 2. Adicionar campos (exemplo: livro fictício)
+    // Campo 245: Título (ind1=1, ind2=0)
     //$title = new File_MARC_Data_Field('245', [
     //    'ind1' => '1',
     //    'ind2' => '0'
     //]);
     //$title->appendSubfield(new File_MARC_Subfield('a', 'Aprendendo MARC21 com PHP'));
-    //$title->appendSubfield(new File_MARC_Subfield('b', 'Guia prÃ¡tico para iniciantes'));
+    //$title->appendSubfield(new File_MARC_Subfield('b', 'Guia prático para iniciantes'));
     //$record->appendField($title);
     //
     //// Campo 100: Autor (ind1=1, ind2= )
@@ -41,15 +41,15 @@ function writeFileMarc() {
     //    'ind1' => '1',
     //    'ind2' => ' '
     //]);
-    //$author->appendSubfield(new File_MARC_Subfield('a', 'Silva, JoÃ£o'));
+    //$author->appendSubfield(new File_MARC_Subfield('a', 'Silva, João'));
     //$record->appendField($author);
     //
-    //// Campo 260: PublicaÃ§Ã£o (ind1= , ind2= )
+    //// Campo 260: Publicação (ind1= , ind2= )
     //$pub = new File_MARC_Data_Field('260', [
     //    'ind1' => ' ',
     //    'ind2' => ' '
     //]);
-    //$pub->appendSubfield(new File_MARC_Subfield('a', 'SÃ£o Paulo'));
+    //$pub->appendSubfield(new File_MARC_Subfield('a', 'São Paulo'));
     //$pub->appendSubfield(new File_MARC_Subfield('b', 'Editora PHP'));
     //$pub->appendSubfield(new File_MARC_Subfield('c', '2023'));
     //$record->appendField($pub);
@@ -63,13 +63,13 @@ function writeFileMarc() {
     //$subject->appendSubfield(new File_MARC_Subfield('a', 'PHP'));
     //$record->appendField($subject);
     //
-    //// 3. Exibir o registro em formato legÃ­vel
+    //// 3. Exibir o registro em formato legível
     //echo "=== Registro MARC21 (Texto) ===\n";
     //echo $record;
     //
-    //// 4. Exportar para MARC21 binÃ¡rio (para gravar em arquivo)
+    //// 4. Exportar para MARC21 binário (para gravar em arquivo)
     //$marcBinary = $record->toRaw();
-    //echo "\n=== Registro MARC21 (BinÃ¡rio) ===\n";
+    //echo "\n=== Registro MARC21 (Binário) ===\n";
     //echo bin2hex($marcBinary);
     //
     //// 5. Salvar em um arquivo .mrc (opcional)
@@ -164,7 +164,7 @@ function callApiGoogleBooksCurl() {
 
 //readIsbnFromFile();
 function readIsbnFromFile() {
-    $data = file_get_contents('C:\vinicius.martins\RepositÃ³rio\erpnet\temp\isbn9788575224038.json');
+    $data = file_get_contents('C:\vinicius.martins\Repositório\erpnet\temp\isbn9788575224038.json');
     $data = json_decode($data, true);
 }
 
@@ -179,7 +179,7 @@ function lerMARC($arquivo) {
         if (trim($registro) === '') continue;
 
         $leader = substr($registro, 0, 24); // Leader = 24 bytes
-        $baseAddress = intval(substr($leader, 12, 5)); // InÃ­cio dos dados de campo
+        $baseAddress = intval(substr($leader, 12, 5)); // Início dos dados de campo
 
         $directory = substr($registro, 24, $baseAddress - 25); // Directory termina em \x1E
 
@@ -205,7 +205,7 @@ function lerMARC($arquivo) {
             return $resultado;
         };
 
-        // Pegando alguns campos padrÃ£o
+        // Pegando alguns campos padrão
         if (!empty($campos['245'])) {
             $sub = $extrairSubcampos($campos['245'][0]);
             $dados['titulo'] = ($sub['a'] ?? '') . (isset($sub['b']) ? ": {$sub['b']}" : '');
@@ -312,7 +312,7 @@ function lerMARCAutor() {
             $nome = trim($partes[1] ?? '');
         }
 
-        // extrair campo 090 ou 050 (para cÃ³digo Cutter)
+        // extrair campo 090 ou 050 (para código Cutter)
         if (preg_match('/090..\\$b([^\\$]+)/u', $registro, $matches) ||
             preg_match('/050..\\$b([^\\$]+)/u', $registro, $matches)) {
             $cutter = trim($matches[1]);
@@ -356,7 +356,7 @@ function extrairAutorDeMARC() {
         if ($autor) {
             $suba = $autor->getSubfield('a'); // Nome completo
             $sube = $autor->getSubfield('e'); // Tipo de autor (ex: organizador, tradutor)
-            $subc = $autor->getSubfield('c'); // InformaÃ§Ãµes complementares (ex: tÃ­tulo, cargo)
+            $subc = $autor->getSubfield('c'); // Informações complementares (ex: título, cargo)
 
             $nomeCompleto = trim($suba ? $suba->getData() : '');
             $tipoAutor    = trim($sube ? $sube->getData() : '');
@@ -375,7 +375,7 @@ function extrairAutorDeMARC() {
                 $cutter = $subb ? trim($subb->getData()) : '';
             }
 
-            // ReferÃªncia bibliogrÃ¡fica bÃ¡sica
+            // Referência bibliográfica básica
             $referencia = $record->toRaw();
 
             $dadosAutor[] = [
@@ -458,9 +458,21 @@ function lerMRCBinario() {
 
 //readMyFileMarc();
 function readMyFileMarc() {
+    ini_set("default_charset", "UTF-8");
+//    ini_set("default_charset", "ISO-8859-1");
+//    ini_set("default_charset", "Windows-1252");
 //    $caminhoArquivo = '../temp/teste1.mrc';
 //    $caminhoArquivo = '../temp/_el_hombre_mediocre;_ensa_iso.txt';
-    $caminhoArquivo = '../temp/records (1).mrc';
+//    $caminhoArquivo = '../temp/records (1).mrc';
+//    $caminhoArquivo = '../temp/110_1_zipped.mrc';
+//    $caminhoArquivo = '../temp/110_1_7z.mrc';
+    $caminhoArquivo = '../temp/1101_1.mrc';
+    $content = file_get_contents($caminhoArquivo);
+                        'OrganizacÌ§aÌ\u0083o das NacÌ§oÌ\u0083es Unidas';
+//    mb_convert_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas', 'ISO-8859-1', 'UTF-8');
+//    mb_detect_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas')
+    
+    echo ini_get("default_charset");
     $dadosAutor = [];
 
 //    require_once __DIR__ . '/estrutura/libs/File_MARC-1.4.1/File/MARC.php';
@@ -468,7 +480,7 @@ function readMyFileMarc() {
     $marc = new \Ebi\View\ViewFileMarc($caminhoArquivo);
 
     while ($record = $marc->next()) {
-        $campo100 = $record->getField('100'); // Autor principal
+        $campo100 = $record->getField('110'); // Autor principal
         $campo700 = $record->getField('700'); // Autor adicional
 
         $autor = $campo100 ?: $campo700;
@@ -476,7 +488,7 @@ function readMyFileMarc() {
         if ($autor) {
             $suba = $autor->getSubfield('a'); // Nome completo
             $sube = $autor->getSubfield('e'); // Tipo de autor (ex: organizador, tradutor)
-            $subc = $autor->getSubfield('c'); // InformaÃ§Ãµes complementares (ex: tÃ­tulo, cargo)
+            $subc = $autor->getSubfield('c'); // Informações complementares (ex: título, cargo)
 
             $nomeCompleto = trim($suba ? $suba->getData() : '');
             $tipoAutor    = trim($sube ? $sube->getData() : '');
@@ -495,7 +507,7 @@ function readMyFileMarc() {
                 $cutter = $subb ? trim($subb->getData()) : '';
             }
 
-            // ReferÃªncia bibliogrÃ¡fica bÃ¡sica
+            // Referência bibliográfica básica
             $referencia = $record->toRaw();
 
             $dadosAutor[] = [
@@ -526,7 +538,7 @@ function testeSoapServer() {
 function testeCUrlPost() {
     $data = [
         "title" => "Teste",
-        "body" => "ConteÃºdo aqui",
+        "body" => "Conteúdo aqui",
         "userId" => 1
     ];
 
@@ -553,7 +565,7 @@ function testeCUrlGet() {
     curl_close($ch);
 
     $data = json_decode($response, true);
-    echo "TÃ­tulo: " . $data["title"];
+    echo "Título: " . $data["title"];
 }
 
 function testeApiRest() {
@@ -561,7 +573,7 @@ function testeApiRest() {
     $response = file_get_contents($url);
 
     $data = json_decode($response, true);
-    echo "TÃ­tulo: " . $data["title"];
+    echo "Título: " . $data["title"];
 }
 
 function testeMicrotime() {
@@ -651,9 +663,9 @@ function returnYield() {
     }
 }
 
-processaPhpOffice();
+//processaPhpOffice();
 function processaPhpOffice() {
-//    require_once 'C:\vinicius.martins\RepositÃ³rio\erpnet\estrutura\libs\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php'; 
+//    require_once 'C:\vinicius.martins\Repositório\erpnet\estrutura\libs\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php'; 
     
    $aFile = file_get_contents('../temp/layout_de_importacao_e_exportacao_2025.xlsx');
 //    $oSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($aFile['tmp_name']);
@@ -679,7 +691,7 @@ function processaPhpOffice() {
                 }
                 if ($oContentColumnC instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
                     $sInfoBasica = $oContentColumnC->getPlainText();
-                    $sInfoBasica = preg_replace('/Tamanho mÃ¡ximo:|Tamanho fixo:|Formato:|ObrigatÃ³rio:/', '', $sInfoBasica);
+                    $sInfoBasica = preg_replace('/Tamanho máximo:|Tamanho fixo:|Formato:|Obrigatório:/', '', $sInfoBasica);
                     $aInfoBasica = explode(ENTER, $sInfoBasica);
                     $aInfoBasica = array_map(function($sInfo) {
                         return trim($sInfo);
@@ -723,3 +735,243 @@ class ListNode {
 
 define('ENTER', '
 ');
+
+//teste2906();
+function teste2906() {
+    echo (true xor false);
+//    echo 'teste';
+}
+
+//testeApiTranslate();
+function testeApiTranslate() {
+// Configurações da API
+$apiUrl = 'https://libretranslate.de/translate';
+$sourceText = 'Hello, how are you?';
+$sourceLang = 'en'; // Código do idioma de origem (inglês)
+$targetLang = 'pt'; // Código do idioma de destino (português)
+
+// Dados da requisição
+$postData = [
+    'q' => $sourceText,
+    'source' => $sourceLang,
+    'target' => $targetLang,
+    'format' => 'text'
+];
+
+// Inicializa o cURL
+$ch = curl_init($apiUrl);
+
+// Configura as opções do cURL
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+]);
+
+// Executa a requisição e obtém a resposta
+$response = curl_exec($ch);
+
+// Verifica erros
+if (curl_errno($ch)) {
+    echo 'Erro no cURL: ' . curl_error($ch);
+} else {
+    $decodedResponse = json_decode($response, true);
+    if (isset($decodedResponse['translatedText'])) {
+        echo "Texto original: " . $sourceText . "\n";
+        echo "Tradução: " . $decodedResponse['translatedText'] . "\n";
+    } else {
+        echo "Erro na tradução: " . $response . "\n";
+    }
+}
+
+// Fecha a sessão cURL
+curl_close($ch);
+}
+
+//charsetTests();
+function charsetTests() {
+//    ini_set("default_charset", "UTF-8");
+//    ini_set("default_charset", "ISO-8859-1");
+    ini_set("default_charset", "Windows-1252");
+//    $caminhoArquivo = '../temp/teste1.mrc';
+//    $caminhoArquivo = '../temp/_el_hombre_mediocre;_ensa_iso.txt';
+//    $caminhoArquivo = '../temp/records (1).mrc';
+//    $caminhoArquivo = '../temp/110_1_zipped.mrc';
+//    $caminhoArquivo = '../temp/110_1_7z.mrc';
+    $caminhoArquivo = '../temp/1101_1.mrc';
+    $content = file_get_contents($caminhoArquivo);
+    echo $content;
+//                        'OrganizacÌ§aÌ\u0083o das NacÌ§oÌ\u0083es Unidas';
+//    mb_convert_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas', 'ISO-8859-1', 'UTF-8');
+//    mb_detect_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas')
+    
+//    echo ini_get("default_charset");
+    
+    echo '<br>';
+    
+    $decoded = mb_convert_encoding($content, 'UTF-8', 'Windows-1252');
+    echo $decoded;
+    
+    echo '<br>';
+    
+    $decoded = mb_convert_encoding($decoded, 'UTF-8', 'UTF-8');
+    echo $decoded;
+    
+    echo '<br>';
+    echo '<br>';
+    
+    $bytes = file_get_contents($caminhoArquivo);
+
+    // Converte de UTF-8 para string correta (se o arquivo for UTF-8)
+    $content = mb_convert_encoding($bytes, 'UTF-8', 'UTF-8'); 
+
+    // Se ainda não funcionar, tente detectar a codificação:
+    $encoding = mb_detect_encoding($bytes, ['UTF-8', 'Windows-1252', 'ISO-8859-1'], true);
+    $content = mb_convert_encoding($bytes, 'UTF-8', $encoding);
+    echo $content;
+    
+    echo '<br>';
+    echo '<br>';
+    
+    // Abre o arquivo com um filtro para forçar UTF-8
+    $handle = fopen($caminhoArquivo, 'r');
+    stream_filter_append($handle, 'convert.iconv.UTF-8/UTF-8'); // Força UTF-8
+    $content = stream_get_contents($handle);
+    fclose($handle);
+    
+    echo '<br>';
+    echo '<br>';
+    
+    $content = base64_encode(file_get_contents($caminhoArquivo));
+    // Em outro script:
+    $original = base64_decode($content); // Bytes puros, sem conversão maluca
+    echo $original;
+    
+    echo '<br>';
+    echo '<br>';
+    
+    $bytes = file_get_contents($caminhoArquivo);
+
+    // Tenta detectar a codificação REAL do arquivo
+    $encoding = mb_detect_encoding($bytes, [
+        'UTF-8', 
+        'Windows-1252', 
+        'ISO-8859-1', 
+        'ASCII',
+        'UTF-16LE',
+        'UTF-16BE'
+    ], true);
+
+    if (!$encoding) {
+        // Se não detectar, força UTF-8 e remove BOM se existir
+        $bytes = preg_replace('/^\xEF\xBB\xBF/', '', $bytes); // Remove BOM do UTF-8
+        $encoding = 'UTF-8';
+    }
+
+    // Converte para UTF-8 (se não já for)
+    $content = ($encoding === 'UTF-8') ? $bytes : mb_convert_encoding($bytes, 'UTF-8', $encoding);
+
+    // Verifica se há caracteres inválidos (opcional)
+    $content = mb_convert_encoding($content, 'UTF-8', 'UTF-8');
+
+    echo $content; // Deve sair correto agora!
+    
+//    strtr($encoding, $caminhoArquivo, $to)
+}
+
+//charsetTests2();
+function charsetTests2() {
+    ini_set("default_charset", "Windows-1252");
+    
+    $caminhoArquivo = '../temp/1101_1.mrc';
+    
+    // Passo 1: Lê o arquivo como BINÁRIO
+    $bytes = file_get_contents($caminhoArquivo);
+
+    // Passo 2: Remove caracteres de controle MARC (opcional, se atrapalhar)
+    $texto = preg_replace('/[\x00-\x1F\x7F]/', '', $bytes); // Remove ASCII não-printáveis
+
+    // Passo 3: Converte apenas o conteúdo textual para UTF-8 (se estiver em Latin-1)
+    $texto = mb_convert_encoding($texto, 'Windows-1252', 'UTF-8');
+
+    // Passo 4: Processa campos MARC (exemplo: campo 100 = título)
+    if (preg_match('/a([^]+)/', $texto, $matches)) {
+        $titulo = $matches[1]; // "Organização das Nações Unidas"
+        echo $titulo;
+    }
+    $titulo = $matches[1]; // "Organização das Nações Unidas"
+    echo $titulo;
+//    echo 'teste';
+}
+
+//charsetTests3();
+function charsetTests3() {
+//    ini_set("default_charset", "UTF-8");
+    ini_set("default_charset", "Windows-1252");
+//    $bytes = file_get_contents('../temp/1101_1.mrc');
+//    echo $bytes;
+//    $decoded = iconv('UTF-8', "Windows-1252//TRANSLIT//IGNORE", $bytes);
+//    echo '<br>';
+//    echo $decoded;
+    
+     // 1. Abre o arquivo como stream binário
+    $handle = fopen('../temp/1101_1.mrc', 'rb');
+    
+    // 2. Adiciona um filtro de conversão para UTF-8 DURANTE a leitura
+    stream_filter_append($handle, 'convert.iconv.UTF-8/UTF-8');
+    
+    // 3. Lê o conteúdo JÁ CONVERTIDO
+    $conteudoUTF8 = stream_get_contents($handle);
+    fclose($handle);
+    echo $conteudoUTF8;
+}
+
+//charset4();
+function charset4() {
+    ini_set("default_charset", "Windows-1252");
+    
+//    $conteudo = file_get_contents('../temp/1101_1.mrc');
+//
+//    // Mesmo que PHP esteja em Windows-1252, os bytes ainda são os corretos
+//    // Precisamos apenas garantir que sejam tratados como UTF-8
+//
+//    if (!mb_detect_encoding($conteudo, 'UTF-8', true)) {
+//        // Provavelmente PHP interpretou errado ? forçamos a reinterpretação correta
+//        $conteudo = mb_convert_encoding($conteudo, 'UTF-8', 'Windows-1252');
+//    }
+//
+//    // Força UTF-8 para o navegador, sem usar ini_set
+//    header("Content-Type: text/html; charset=UTF-8");
+//
+//    echo $conteudo;
+    
+    $conteudo = file_get_contents('../temp/1101_1.mrc');
+    $conteudo = mb_convert_encoding($conteudo, 'UTF-8', 'UTF-8'); // "reforça" UTF-8
+
+    header("Content-Type: text/html; charset=UTF-8");
+
+    echo $conteudo;
+}
+
+testeCharsetBd();
+function testeCharsetBd() {
+    ini_set("default_charset", "Windows-1252");
+    $conteudo = file_get_contents('../temp/1101_1.mrc');
+    
+//    $conteudoConvertido = mb_convert_encoding($conteudo, 'UTF-8', 'Windows-1252');
+    
+//    $query = new Query();
+//    $query->set_sql("insert into charset_teste values ('$conteudoConvertido')");
+//    $query->execute();
+    echo $conteudo;
+    echo '<br>';
+    echo json_encode(['res' => $conteudo]);
+    echo '<br>';
+    ?>
+    <script>
+        const content = JSON.parse('{"res":"00264nz a2200097n 4500001000800000003000600008005001700014008003900031110006800070670002800138\u001e1000002\u001eBR-Bn\u001e20250627114200.0\u001e240101n||azannaabn||||||||||n|aaa|||||\u001e2 \u001faOrganizac\u0327a\u0303o das Nac\u0327o\u0303es Unidas.\u001fbConselho de Seguranc\u0327a\u001e \u001faResoluc\u0327o\u0303es oficiais\u001e\u001d"}');
+        console.log(content);
+    </script>
+    <?php        
+}

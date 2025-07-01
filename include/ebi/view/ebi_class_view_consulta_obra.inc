@@ -18,6 +18,7 @@ class ViewConsultaObra extends ViewConsulta {
     protected function addAcoes() {
         parent::addAcoes();
         $this->adicionaAcoesPadrao();
+//        $this->adicionaAcao(92001, $iAcao);
     }
     
 }

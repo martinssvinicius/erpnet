@@ -11,4 +11,11 @@ use ControllerManutencao;
  */
 class ControllerManutencaoObra extends \ControllerManutencaoBoProcess {
     
+    public function processaDadosInclusao() {
+//        return parent::processaDadosInclusao();
+        
+        
+        
+    }
+    
 }

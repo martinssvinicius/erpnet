@@ -35,7 +35,7 @@ spl_autoload_register(function($classe) {
     /**
      * a mais
      */
-    require_once 'est_class_elasticsearch_handler.inc';
+//    require_once 'est_class_elasticsearch_handler.inc';
     
     
     $pieces = explode('\\', $classe);

@@ -2,7 +2,7 @@
 
 use Elastic\Elasticsearch\ClientBuilder;
 
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
 
 /**
  * Description of est_class_elasticsearch_handler

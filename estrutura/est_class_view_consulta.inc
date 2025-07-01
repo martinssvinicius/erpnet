@@ -29,13 +29,20 @@ abstract class ViewConsulta {
         
     }
     
+    protected function adicionaAcao($iRotina, $iAcao) {
+        $acao = new AcaoConsulta();
+        $acao->setRotina($iRotina);
+        $acao->setAcao($iAcao);
+        $this->acoes[] = $acao;
+        return $acao;
+    }
+    
     protected function adicionaAcaoGrid($iRotina, $iAcao) {
         $acao = new AcaoConsulta();
         $acao->setRotina($iRotina);
         $acao->setAcao($iAcao);
         $this->acoes[] = $acao;
         return $acao;
-        
     }
     
     public function getAcoes() {
