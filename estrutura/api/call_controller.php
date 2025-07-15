@@ -2,7 +2,7 @@
 
 require_once 'est_class_autoloader.inc';
 
-header('Content-type: application/json');
+header('Content-type: application/json; charset=ISO-8859-1');
 
 set_exception_handler(function ($e) {
     http_response_code(500);

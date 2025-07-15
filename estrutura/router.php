@@ -1,5 +1,7 @@
 <?php
 
+//ini_set('default_charset', 'ISO-8859-1');
+
 require_once './est_class_autoloader.inc';
 
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);

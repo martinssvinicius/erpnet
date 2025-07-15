@@ -954,7 +954,7 @@ function charset4() {
     echo $conteudo;
 }
 
-testeCharsetBd();
+//testeCharsetBd();
 function testeCharsetBd() {
     ini_set("default_charset", "Windows-1252");
     $conteudo = file_get_contents('../temp/1101_1.mrc');
@@ -985,3 +985,111 @@ function testeCharsetBd() {
 //    'Ãª' => 'ê',
 //    'Ã ' => 'à'  // Espaço pode variar
 //];
+
+teste1407();
+function teste1407() {
+    header("Content-Type: text/html; charset=ISO-8859-1");
+//    echo 'teste';
+//    echo ini_get('default_charset');
+//    $conteudo = file_get_contents('../temp/1101_1.mrc');
+    $conteudo = 'Organização das Nações Unidas';
+    $conteudo = mb_convert_encoding($conteudo, 'Windows-1252', 'ISO-8859-1');
+    $conteudo = mb_convert_encoding($conteudo, 'UTF-8', 'Windows-1252');
+    
+//    $conteudo = str_replace('cÌ§', 'ç', $conteudo);
+//    
+    echo $conteudo;
+//    
+//    $conteudo = corrigir_caracteres_corrompidos($conteudo);
+//    $conteudo = iconv('UTF-8', 'ISO-8859-1', $conteudo);
+//    $conteudo = 'c?a? c?o? Unidas';
+//    echo $conteudo;
+//    $conteudo = utf8_decode('Organizac?a?o das Nac?o?es Unidas');
+//    $conteudo = 'Organização das Nações Unidas';
+    
+//    echo "Encoding detectado: " . $encoding;
+    
+//    if (substr($conteudo, 0, 3) == "\xEF\xBB\xBF") {
+//        $conteudo = substr($conteudo, 3);
+//    }
+    
+//    $conteudo = preg_replace('/^\xEF\xBB\xBF/', '', $conteudo);
+//    $conteudo = iconv('UTF-8', 'ISO-8859-1', $conteudo);
+    
+//    $encoding = mb_detect_encoding($conteudo, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true);
+//    $conteudo = iconv('UTF-8', 'ISO-8859-1//TRANSLITE', $conteudo);
+    
+//    $conteudo = pg_escape_string(null, $conteudo);
+    
+//    $conexa = Conexao::getConexao();
+//    $conteudo = mb_convert_encoding($conteudo, 'ISO-8859-1', 'UTF-8');
+//    
+//    $conteudo = htmlentities($conteudo, ENT_QUOTES, 'UTF-8');
+//    echo ''
+//    $query = new Query();
+//    $query->set_sql("insert into tbteste values ('$conteudo')");
+//    $query->execute();
+    
+//    var_dump($conexa);
+    
+//    header("Content-Type: text/html; charset=UTF-8");
+    
+//    echo $conteudo;
+    
+}
+
+function corrigir_caracteres_corrompidos($texto_corrompido) {
+    // Mapeamento dos caracteres corrompidos para os corretos
+    $correcoes = [
+        '/Ì§/' => 'ç',
+        '/Ìƒ/' => 'ã',
+        '/Ì /' => 'à',
+        '/Ì¡/' => 'á',
+        '/Ì¢/' => 'â',
+        '/Ì¤/' => 'ä',
+        '/Ì¥/' => 'å',
+        '/Ì¨/' => 'è',
+        '/Ì©/' => 'é',
+        '/Ìª/' => 'ê',
+        '/Ì«/' => 'ë',
+        '/Ì¬/' => 'ì',
+        '/Ì­/' => 'í',
+        '/Ì®/' => 'î',
+        '/Ì¯/' => 'ï',
+        '/Ì²/' => 'ò',
+        '/Ì³/' => 'ó',
+        '/Ì´/' => 'ô',
+        '/Ìµ/' => 'õ',
+        '/Ì¶/' => 'ö',
+        '/Ì¹/' => 'ù',
+        '/Ìº/' => 'ú',
+        '/Ì»/' => 'û',
+        '/Ì¼/' => 'ü',
+        '/Ì½/' => 'ý',
+        '/Ã§/' => 'ç',
+        '/Ã£/' => 'ã',
+        '/Ã¡/' => 'á',
+        '/Ã¢/' => 'â',
+        '/Ã©/' => 'é',
+        '/Ãª/' => 'ê',
+        '/Ã³/' => 'ó',
+        '/Ãµ/' => 'õ',
+        '/Ãº/' => 'ú',
+        '/Ãª/' => 'ê',
+        '/Ã /' => 'à'  // Espaço após Ã é importante
+    ];
+
+    // Aplica todas as correções
+    $texto_corrigido = preg_replace(
+        array_keys($correcoes),
+        array_values($correcoes),
+        $texto_corrompido
+    );
+
+    return $texto_corrigido;
+}
+
+// Exemplo de uso:
+$texto_errado = "OrganizacÌ§aÌƒo das NacÌ§oÌƒes Unidas";
+$texto_correto = corrigir_caracteres_corrompidos($texto_errado);
+//echo $texto_correto;  // Saída: "Organização das Nações Unidas"
