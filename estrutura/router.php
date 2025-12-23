@@ -1,5 +1,6 @@
 <?php
 
+// echo phpinfo();
 //ini_set('default_charset', 'ISO-8859-1');
 
 require_once './est_class_autoloader.inc';

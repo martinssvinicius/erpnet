@@ -18,7 +18,8 @@ class Conexao {
             try {
 //                self::$instancia = new PDO('pgsql:host=localhost;port=5432;dbname=erpnet', 'postgres', '9f18dd360ceb47d4888ab8271bc898c2', [
 //                self::$instancia = new PDO('pgsql:host=localhost;port=5432;dbname=dbwin1252', 'postgres', '9f18dd360ceb47d4888ab8271bc898c2', [
-                self::$instancia = new PDO('pgsql:host=localhost;port=5432;dbname=erpnetlatin', 'postgres', '9f18dd360ceb47d4888ab8271bc898c2', [
+                // self::$instancia = new PDO('pgsql:host=localhost;port=5432;dbname=erpnetlatin', 'postgres', '9f18dd360ceb47d4888ab8271bc898c2', [
+                self::$instancia = new PDO('pgsql:host=localhost;port=5432;dbname=erpnet', 'postgres', 'postgres', [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
                 ]);
             } catch (Exception $ex) {
