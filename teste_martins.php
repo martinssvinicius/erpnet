@@ -10,7 +10,7 @@ function writeFileMarc() {
 
     $record = new File_MARC_Record();
 
-    // Adicionar campo 245 (título)
+    // Adicionar campo 245 (tï¿½tulo)
     $title = new File_MARC_Data_Field('245', [
         new File_MARC_Subfield('a', 'Dom Casmurro'),
         new File_MARC_Subfield('b', 'romance brasileiro')
@@ -26,14 +26,14 @@ function writeFileMarc() {
 
     file_put_contents('/temp/livro.mrc', 'teste');
 
-    // 2. Adicionar campos (exemplo: livro fictício)
-    // Campo 245: Título (ind1=1, ind2=0)
+    // 2. Adicionar campos (exemplo: livro fictï¿½cio)
+    // Campo 245: Tï¿½tulo (ind1=1, ind2=0)
     //$title = new File_MARC_Data_Field('245', [
     //    'ind1' => '1',
     //    'ind2' => '0'
     //]);
     //$title->appendSubfield(new File_MARC_Subfield('a', 'Aprendendo MARC21 com PHP'));
-    //$title->appendSubfield(new File_MARC_Subfield('b', 'Guia prático para iniciantes'));
+    //$title->appendSubfield(new File_MARC_Subfield('b', 'Guia prï¿½tico para iniciantes'));
     //$record->appendField($title);
     //
     //// Campo 100: Autor (ind1=1, ind2= )
@@ -41,15 +41,15 @@ function writeFileMarc() {
     //    'ind1' => '1',
     //    'ind2' => ' '
     //]);
-    //$author->appendSubfield(new File_MARC_Subfield('a', 'Silva, João'));
+    //$author->appendSubfield(new File_MARC_Subfield('a', 'Silva, Joï¿½o'));
     //$record->appendField($author);
     //
-    //// Campo 260: Publicação (ind1= , ind2= )
+    //// Campo 260: Publicaï¿½ï¿½o (ind1= , ind2= )
     //$pub = new File_MARC_Data_Field('260', [
     //    'ind1' => ' ',
     //    'ind2' => ' '
     //]);
-    //$pub->appendSubfield(new File_MARC_Subfield('a', 'São Paulo'));
+    //$pub->appendSubfield(new File_MARC_Subfield('a', 'Sï¿½o Paulo'));
     //$pub->appendSubfield(new File_MARC_Subfield('b', 'Editora PHP'));
     //$pub->appendSubfield(new File_MARC_Subfield('c', '2023'));
     //$record->appendField($pub);
@@ -63,13 +63,13 @@ function writeFileMarc() {
     //$subject->appendSubfield(new File_MARC_Subfield('a', 'PHP'));
     //$record->appendField($subject);
     //
-    //// 3. Exibir o registro em formato legível
+    //// 3. Exibir o registro em formato legï¿½vel
     //echo "=== Registro MARC21 (Texto) ===\n";
     //echo $record;
     //
-    //// 4. Exportar para MARC21 binário (para gravar em arquivo)
+    //// 4. Exportar para MARC21 binï¿½rio (para gravar em arquivo)
     //$marcBinary = $record->toRaw();
-    //echo "\n=== Registro MARC21 (Binário) ===\n";
+    //echo "\n=== Registro MARC21 (Binï¿½rio) ===\n";
     //echo bin2hex($marcBinary);
     //
     //// 5. Salvar em um arquivo .mrc (opcional)
@@ -164,7 +164,7 @@ function callApiGoogleBooksCurl() {
 
 //readIsbnFromFile();
 function readIsbnFromFile() {
-    $data = file_get_contents('C:\vinicius.martins\Repositório\erpnet\temp\isbn9788575224038.json');
+    $data = file_get_contents('C:\vinicius.martins\Repositï¿½rio\erpnet\temp\isbn9788575224038.json');
     $data = json_decode($data, true);
 }
 
@@ -179,7 +179,7 @@ function lerMARC($arquivo) {
         if (trim($registro) === '') continue;
 
         $leader = substr($registro, 0, 24); // Leader = 24 bytes
-        $baseAddress = intval(substr($leader, 12, 5)); // Início dos dados de campo
+        $baseAddress = intval(substr($leader, 12, 5)); // Inï¿½cio dos dados de campo
 
         $directory = substr($registro, 24, $baseAddress - 25); // Directory termina em \x1E
 
@@ -205,7 +205,7 @@ function lerMARC($arquivo) {
             return $resultado;
         };
 
-        // Pegando alguns campos padrão
+        // Pegando alguns campos padrï¿½o
         if (!empty($campos['245'])) {
             $sub = $extrairSubcampos($campos['245'][0]);
             $dados['titulo'] = ($sub['a'] ?? '') . (isset($sub['b']) ? ": {$sub['b']}" : '');
@@ -312,7 +312,7 @@ function lerMARCAutor() {
             $nome = trim($partes[1] ?? '');
         }
 
-        // extrair campo 090 ou 050 (para código Cutter)
+        // extrair campo 090 ou 050 (para cï¿½digo Cutter)
         if (preg_match('/090..\\$b([^\\$]+)/u', $registro, $matches) ||
             preg_match('/050..\\$b([^\\$]+)/u', $registro, $matches)) {
             $cutter = trim($matches[1]);
@@ -356,7 +356,7 @@ function extrairAutorDeMARC() {
         if ($autor) {
             $suba = $autor->getSubfield('a'); // Nome completo
             $sube = $autor->getSubfield('e'); // Tipo de autor (ex: organizador, tradutor)
-            $subc = $autor->getSubfield('c'); // Informações complementares (ex: título, cargo)
+            $subc = $autor->getSubfield('c'); // Informaï¿½ï¿½es complementares (ex: tï¿½tulo, cargo)
 
             $nomeCompleto = trim($suba ? $suba->getData() : '');
             $tipoAutor    = trim($sube ? $sube->getData() : '');
@@ -375,7 +375,7 @@ function extrairAutorDeMARC() {
                 $cutter = $subb ? trim($subb->getData()) : '';
             }
 
-            // Referência bibliográfica básica
+            // Referï¿½ncia bibliogrï¿½fica bï¿½sica
             $referencia = $record->toRaw();
 
             $dadosAutor[] = [
@@ -468,9 +468,9 @@ function readMyFileMarc() {
 //    $caminhoArquivo = '../temp/110_1_7z.mrc';
     $caminhoArquivo = '../temp/1101_1.mrc';
     $content = file_get_contents($caminhoArquivo);
-                        'OrganizacÌ§aÌ\u0083o das NacÌ§oÌ\u0083es Unidas';
-//    mb_convert_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas', 'ISO-8859-1', 'UTF-8');
-//    mb_detect_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas')
+                        'OrganizacÌ§aï¿½\u0083o das NacÌ§oï¿½\u0083es Unidas';
+//    mb_convert_encoding('OrganizacÌ§aï¿½?o das NacÌ§oï¿½?es Unidas', 'ISO-8859-1', 'UTF-8');
+//    mb_detect_encoding('OrganizacÌ§aï¿½?o das NacÌ§oï¿½?es Unidas')
     
     echo ini_get("default_charset");
     $dadosAutor = [];
@@ -488,7 +488,7 @@ function readMyFileMarc() {
         if ($autor) {
             $suba = $autor->getSubfield('a'); // Nome completo
             $sube = $autor->getSubfield('e'); // Tipo de autor (ex: organizador, tradutor)
-            $subc = $autor->getSubfield('c'); // Informações complementares (ex: título, cargo)
+            $subc = $autor->getSubfield('c'); // Informaï¿½ï¿½es complementares (ex: tï¿½tulo, cargo)
 
             $nomeCompleto = trim($suba ? $suba->getData() : '');
             $tipoAutor    = trim($sube ? $sube->getData() : '');
@@ -507,7 +507,7 @@ function readMyFileMarc() {
                 $cutter = $subb ? trim($subb->getData()) : '';
             }
 
-            // Referência bibliográfica básica
+            // Referï¿½ncia bibliogrï¿½fica bï¿½sica
             $referencia = $record->toRaw();
 
             $dadosAutor[] = [
@@ -538,7 +538,7 @@ function testeSoapServer() {
 function testeCUrlPost() {
     $data = [
         "title" => "Teste",
-        "body" => "Conteúdo aqui",
+        "body" => "Conteï¿½do aqui",
         "userId" => 1
     ];
 
@@ -565,7 +565,7 @@ function testeCUrlGet() {
     curl_close($ch);
 
     $data = json_decode($response, true);
-    echo "Título: " . $data["title"];
+    echo "Tï¿½tulo: " . $data["title"];
 }
 
 function testeApiRest() {
@@ -573,7 +573,7 @@ function testeApiRest() {
     $response = file_get_contents($url);
 
     $data = json_decode($response, true);
-    echo "Título: " . $data["title"];
+    echo "Tï¿½tulo: " . $data["title"];
 }
 
 function testeMicrotime() {
@@ -665,7 +665,7 @@ function returnYield() {
 
 //processaPhpOffice();
 function processaPhpOffice() {
-//    require_once 'C:\vinicius.martins\Repositório\erpnet\estrutura\libs\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php'; 
+//    require_once 'C:\vinicius.martins\Repositï¿½rio\erpnet\estrutura\libs\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php'; 
     
    $aFile = file_get_contents('../temp/layout_de_importacao_e_exportacao_2025.xlsx');
 //    $oSpreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($aFile['tmp_name']);
@@ -691,7 +691,7 @@ function processaPhpOffice() {
                 }
                 if ($oContentColumnC instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
                     $sInfoBasica = $oContentColumnC->getPlainText();
-                    $sInfoBasica = preg_replace('/Tamanho máximo:|Tamanho fixo:|Formato:|Obrigatório:/', '', $sInfoBasica);
+                    $sInfoBasica = preg_replace('/Tamanho mï¿½ximo:|Tamanho fixo:|Formato:|Obrigatï¿½rio:/', '', $sInfoBasica);
                     $aInfoBasica = explode(ENTER, $sInfoBasica);
                     $aInfoBasica = array_map(function($sInfo) {
                         return trim($sInfo);
@@ -744,13 +744,13 @@ function teste2906() {
 
 //testeApiTranslate();
 function testeApiTranslate() {
-// Configurações da API
+// Configuraï¿½ï¿½es da API
 $apiUrl = 'https://libretranslate.de/translate';
 $sourceText = 'Hello, how are you?';
-$sourceLang = 'en'; // Código do idioma de origem (inglês)
-$targetLang = 'pt'; // Código do idioma de destino (português)
+$sourceLang = 'en'; // Cï¿½digo do idioma de origem (inglï¿½s)
+$targetLang = 'pt'; // Cï¿½digo do idioma de destino (portuguï¿½s)
 
-// Dados da requisição
+// Dados da requisiï¿½ï¿½o
 $postData = [
     'q' => $sourceText,
     'source' => $sourceLang,
@@ -761,7 +761,7 @@ $postData = [
 // Inicializa o cURL
 $ch = curl_init($apiUrl);
 
-// Configura as opções do cURL
+// Configura as opï¿½ï¿½es do cURL
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postData));
@@ -769,7 +769,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-Type: application/json',
 ]);
 
-// Executa a requisição e obtém a resposta
+// Executa a requisiï¿½ï¿½o e obtï¿½m a resposta
 $response = curl_exec($ch);
 
 // Verifica erros
@@ -779,13 +779,13 @@ if (curl_errno($ch)) {
     $decodedResponse = json_decode($response, true);
     if (isset($decodedResponse['translatedText'])) {
         echo "Texto original: " . $sourceText . "\n";
-        echo "Tradução: " . $decodedResponse['translatedText'] . "\n";
+        echo "Traduï¿½ï¿½o: " . $decodedResponse['translatedText'] . "\n";
     } else {
-        echo "Erro na tradução: " . $response . "\n";
+        echo "Erro na traduï¿½ï¿½o: " . $response . "\n";
     }
 }
 
-// Fecha a sessão cURL
+// Fecha a sessï¿½o cURL
 curl_close($ch);
 }
 
@@ -802,9 +802,9 @@ function charsetTests() {
     $caminhoArquivo = '../temp/1101_1.mrc';
     $content = file_get_contents($caminhoArquivo);
     echo $content;
-//                        'OrganizacÌ§aÌ\u0083o das NacÌ§oÌ\u0083es Unidas';
-//    mb_convert_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas', 'ISO-8859-1', 'UTF-8');
-//    mb_detect_encoding('OrganizacÌ§aÌ?o das NacÌ§oÌ?es Unidas')
+//                        'OrganizacÌ§aï¿½\u0083o das NacÌ§oï¿½\u0083es Unidas';
+//    mb_convert_encoding('OrganizacÌ§aï¿½?o das NacÌ§oï¿½?es Unidas', 'ISO-8859-1', 'UTF-8');
+//    mb_detect_encoding('OrganizacÌ§aï¿½?o das NacÌ§oï¿½?es Unidas')
     
 //    echo ini_get("default_charset");
     
@@ -826,7 +826,7 @@ function charsetTests() {
     // Converte de UTF-8 para string correta (se o arquivo for UTF-8)
     $content = mb_convert_encoding($bytes, 'UTF-8', 'UTF-8'); 
 
-    // Se ainda não funcionar, tente detectar a codificação:
+    // Se ainda nï¿½o funcionar, tente detectar a codificaï¿½ï¿½o:
     $encoding = mb_detect_encoding($bytes, ['UTF-8', 'Windows-1252', 'ISO-8859-1'], true);
     $content = mb_convert_encoding($bytes, 'UTF-8', $encoding);
     echo $content;
@@ -834,9 +834,9 @@ function charsetTests() {
     echo '<br>';
     echo '<br>';
     
-    // Abre o arquivo com um filtro para forçar UTF-8
+    // Abre o arquivo com um filtro para forï¿½ar UTF-8
     $handle = fopen($caminhoArquivo, 'r');
-    stream_filter_append($handle, 'convert.iconv.UTF-8/UTF-8'); // Força UTF-8
+    stream_filter_append($handle, 'convert.iconv.UTF-8/UTF-8'); // Forï¿½a UTF-8
     $content = stream_get_contents($handle);
     fclose($handle);
     
@@ -845,7 +845,7 @@ function charsetTests() {
     
     $content = base64_encode(file_get_contents($caminhoArquivo));
     // Em outro script:
-    $original = base64_decode($content); // Bytes puros, sem conversão maluca
+    $original = base64_decode($content); // Bytes puros, sem conversï¿½o maluca
     echo $original;
     
     echo '<br>';
@@ -853,7 +853,7 @@ function charsetTests() {
     
     $bytes = file_get_contents($caminhoArquivo);
 
-    // Tenta detectar a codificação REAL do arquivo
+    // Tenta detectar a codificaï¿½ï¿½o REAL do arquivo
     $encoding = mb_detect_encoding($bytes, [
         'UTF-8', 
         'Windows-1252', 
@@ -864,15 +864,15 @@ function charsetTests() {
     ], true);
 
     if (!$encoding) {
-        // Se não detectar, força UTF-8 e remove BOM se existir
+        // Se nï¿½o detectar, forï¿½a UTF-8 e remove BOM se existir
         $bytes = preg_replace('/^\xEF\xBB\xBF/', '', $bytes); // Remove BOM do UTF-8
         $encoding = 'UTF-8';
     }
 
-    // Converte para UTF-8 (se não já for)
+    // Converte para UTF-8 (se nï¿½o jï¿½ for)
     $content = ($encoding === 'UTF-8') ? $bytes : mb_convert_encoding($bytes, 'UTF-8', $encoding);
 
-    // Verifica se há caracteres inválidos (opcional)
+    // Verifica se hï¿½ caracteres invï¿½lidos (opcional)
     $content = mb_convert_encoding($content, 'UTF-8', 'UTF-8');
 
     echo $content; // Deve sair correto agora!
@@ -886,21 +886,21 @@ function charsetTests2() {
     
     $caminhoArquivo = '../temp/1101_1.mrc';
     
-    // Passo 1: Lê o arquivo como BINÁRIO
+    // Passo 1: Lï¿½ o arquivo como BINï¿½RIO
     $bytes = file_get_contents($caminhoArquivo);
 
     // Passo 2: Remove caracteres de controle MARC (opcional, se atrapalhar)
-    $texto = preg_replace('/[\x00-\x1F\x7F]/', '', $bytes); // Remove ASCII não-printáveis
+    $texto = preg_replace('/[\x00-\x1F\x7F]/', '', $bytes); // Remove ASCII nï¿½o-printï¿½veis
 
-    // Passo 3: Converte apenas o conteúdo textual para UTF-8 (se estiver em Latin-1)
+    // Passo 3: Converte apenas o conteï¿½do textual para UTF-8 (se estiver em Latin-1)
     $texto = mb_convert_encoding($texto, 'Windows-1252', 'UTF-8');
 
-    // Passo 4: Processa campos MARC (exemplo: campo 100 = título)
+    // Passo 4: Processa campos MARC (exemplo: campo 100 = tï¿½tulo)
     if (preg_match('/a([^]+)/', $texto, $matches)) {
-        $titulo = $matches[1]; // "Organização das Nações Unidas"
+        $titulo = $matches[1]; // "Organizaï¿½ï¿½o das Naï¿½ï¿½es Unidas"
         echo $titulo;
     }
-    $titulo = $matches[1]; // "Organização das Nações Unidas"
+    $titulo = $matches[1]; // "Organizaï¿½ï¿½o das Naï¿½ï¿½es Unidas"
     echo $titulo;
 //    echo 'teste';
 }
@@ -915,13 +915,13 @@ function charsetTests3() {
 //    echo '<br>';
 //    echo $decoded;
     
-     // 1. Abre o arquivo como stream binário
+     // 1. Abre o arquivo como stream binï¿½rio
     $handle = fopen('../temp/1101_1.mrc', 'rb');
     
-    // 2. Adiciona um filtro de conversão para UTF-8 DURANTE a leitura
+    // 2. Adiciona um filtro de conversï¿½o para UTF-8 DURANTE a leitura
     stream_filter_append($handle, 'convert.iconv.UTF-8/UTF-8');
     
-    // 3. Lê o conteúdo JÁ CONVERTIDO
+    // 3. Lï¿½ o conteï¿½do Jï¿½ CONVERTIDO
     $conteudoUTF8 = stream_get_contents($handle);
     fclose($handle);
     echo $conteudoUTF8;
@@ -933,21 +933,21 @@ function charset4() {
     
 //    $conteudo = file_get_contents('../temp/1101_1.mrc');
 //
-//    // Mesmo que PHP esteja em Windows-1252, os bytes ainda são os corretos
+//    // Mesmo que PHP esteja em Windows-1252, os bytes ainda sï¿½o os corretos
 //    // Precisamos apenas garantir que sejam tratados como UTF-8
 //
 //    if (!mb_detect_encoding($conteudo, 'UTF-8', true)) {
-//        // Provavelmente PHP interpretou errado ? forçamos a reinterpretação correta
+//        // Provavelmente PHP interpretou errado ? forï¿½amos a reinterpretaï¿½ï¿½o correta
 //        $conteudo = mb_convert_encoding($conteudo, 'UTF-8', 'Windows-1252');
 //    }
 //
-//    // Força UTF-8 para o navegador, sem usar ini_set
+//    // Forï¿½a UTF-8 para o navegador, sem usar ini_set
 //    header("Content-Type: text/html; charset=UTF-8");
 //
 //    echo $conteudo;
     
     $conteudo = file_get_contents('../temp/1101_1.mrc');
-    $conteudo = mb_convert_encoding($conteudo, 'UTF-8', 'UTF-8'); // "reforça" UTF-8
+    $conteudo = mb_convert_encoding($conteudo, 'UTF-8', 'UTF-8'); // "reforï¿½a" UTF-8
 
     header("Content-Type: text/html; charset=UTF-8");
 
@@ -977,26 +977,26 @@ function testeCharsetBd() {
 }
 
 //$mapa_correcao = [
-//    'Ã§' => 'ç',
-//    'Ã£' => 'ã',
-//    'Ã¡' => 'á',
-//    'Ã³' => 'ó',
-//    'Ã©' => 'é',
-//    'Ãª' => 'ê',
-//    'Ã ' => 'à'  // Espaço pode variar
+//    'Ã§' => 'ï¿½',
+//    'Ã£' => 'ï¿½',
+//    'Ã¡' => 'ï¿½',
+//    'Ã³' => 'ï¿½',
+//    'Ã©' => 'ï¿½',
+//    'Ãª' => 'ï¿½',
+//    'ï¿½ ' => 'ï¿½'  // Espaï¿½o pode variar
 //];
 
-teste1407();
+// teste1407();
 function teste1407() {
     header("Content-Type: text/html; charset=ISO-8859-1");
 //    echo 'teste';
 //    echo ini_get('default_charset');
 //    $conteudo = file_get_contents('../temp/1101_1.mrc');
-    $conteudo = 'Organização das Nações Unidas';
+    $conteudo = 'Organizaï¿½ï¿½o das Naï¿½ï¿½es Unidas';
     $conteudo = mb_convert_encoding($conteudo, 'Windows-1252', 'ISO-8859-1');
     $conteudo = mb_convert_encoding($conteudo, 'UTF-8', 'Windows-1252');
     
-//    $conteudo = str_replace('cÌ§', 'ç', $conteudo);
+//    $conteudo = str_replace('cÌ§', 'ï¿½', $conteudo);
 //    
     echo $conteudo;
 //    
@@ -1005,7 +1005,7 @@ function teste1407() {
 //    $conteudo = 'c?a? c?o? Unidas';
 //    echo $conteudo;
 //    $conteudo = utf8_decode('Organizac?a?o das Nac?o?es Unidas');
-//    $conteudo = 'Organização das Nações Unidas';
+//    $conteudo = 'Organizaï¿½ï¿½o das Naï¿½ï¿½es Unidas';
     
 //    echo "Encoding detectado: " . $encoding;
     
@@ -1041,45 +1041,45 @@ function teste1407() {
 function corrigir_caracteres_corrompidos($texto_corrompido) {
     // Mapeamento dos caracteres corrompidos para os corretos
     $correcoes = [
-        '/Ì§/' => 'ç',
-        '/Ìƒ/' => 'ã',
-        '/Ì /' => 'à',
-        '/Ì¡/' => 'á',
-        '/Ì¢/' => 'â',
-        '/Ì¤/' => 'ä',
-        '/Ì¥/' => 'å',
-        '/Ì¨/' => 'è',
-        '/Ì©/' => 'é',
-        '/Ìª/' => 'ê',
-        '/Ì«/' => 'ë',
-        '/Ì¬/' => 'ì',
-        '/Ì­/' => 'í',
-        '/Ì®/' => 'î',
-        '/Ì¯/' => 'ï',
-        '/Ì²/' => 'ò',
-        '/Ì³/' => 'ó',
-        '/Ì´/' => 'ô',
-        '/Ìµ/' => 'õ',
-        '/Ì¶/' => 'ö',
-        '/Ì¹/' => 'ù',
-        '/Ìº/' => 'ú',
-        '/Ì»/' => 'û',
-        '/Ì¼/' => 'ü',
-        '/Ì½/' => 'ý',
-        '/Ã§/' => 'ç',
-        '/Ã£/' => 'ã',
-        '/Ã¡/' => 'á',
-        '/Ã¢/' => 'â',
-        '/Ã©/' => 'é',
-        '/Ãª/' => 'ê',
-        '/Ã³/' => 'ó',
-        '/Ãµ/' => 'õ',
-        '/Ãº/' => 'ú',
-        '/Ãª/' => 'ê',
-        '/Ã /' => 'à'  // Espaço após Ã é importante
+        '/Ì§/' => 'ï¿½',
+        '/Ìƒ/' => 'ï¿½',
+        '/ï¿½ /' => 'ï¿½',
+        '/Ì¡/' => 'ï¿½',
+        '/Ì¢/' => 'ï¿½',
+        '/Ì¤/' => 'ï¿½',
+        '/Ì¥/' => 'ï¿½',
+        '/Ì¨/' => 'ï¿½',
+        '/Ì©/' => 'ï¿½',
+        '/Ìª/' => 'ï¿½',
+        '/Ì«/' => 'ï¿½',
+        '/Ì¬/' => 'ï¿½',
+        '/Ì­/' => 'ï¿½',
+        '/Ì®/' => 'ï¿½',
+        '/Ì¯/' => 'ï¿½',
+        '/Ì²/' => 'ï¿½',
+        '/Ì³/' => 'ï¿½',
+        '/Ì´/' => 'ï¿½',
+        '/Ìµ/' => 'ï¿½',
+        '/Ì¶/' => 'ï¿½',
+        '/Ì¹/' => 'ï¿½',
+        '/Ìº/' => 'ï¿½',
+        '/Ì»/' => 'ï¿½',
+        '/Ì¼/' => 'ï¿½',
+        '/Ì½/' => 'ï¿½',
+        '/Ã§/' => 'ï¿½',
+        '/Ã£/' => 'ï¿½',
+        '/Ã¡/' => 'ï¿½',
+        '/Ã¢/' => 'ï¿½',
+        '/Ã©/' => 'ï¿½',
+        '/Ãª/' => 'ï¿½',
+        '/Ã³/' => 'ï¿½',
+        '/Ãµ/' => 'ï¿½',
+        '/Ãº/' => 'ï¿½',
+        '/Ãª/' => 'ï¿½',
+        '/ï¿½ /' => 'ï¿½'  // Espaï¿½o apï¿½s ï¿½ ï¿½ importante
     ];
 
-    // Aplica todas as correções
+    // Aplica todas as correï¿½ï¿½es
     $texto_corrigido = preg_replace(
         array_keys($correcoes),
         array_values($correcoes),
@@ -1092,4 +1092,24 @@ function corrigir_caracteres_corrompidos($texto_corrompido) {
 // Exemplo de uso:
 $texto_errado = "OrganizacÌ§aÌƒo das NacÌ§oÌƒes Unidas";
 $texto_correto = corrigir_caracteres_corrompidos($texto_errado);
-//echo $texto_correto;  // Saída: "Organização das Nações Unidas"
+//echo $texto_correto;  // Saï¿½da: "Organizaï¿½ï¿½o das Naï¿½ï¿½es Unidas"
+
+
+if (true) {
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <!-- <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+        <title>Teste</title>
+        <link rel="stylesheet" href="../estrutura/css/teste.css">
+    </head>
+    <body>
+        <div class="teste-secundario">
+            |
+        </div>
+    </body>
+    </html>
+    <?php
+}
